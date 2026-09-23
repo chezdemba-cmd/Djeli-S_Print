@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { registerWorkstation } from "@/app/dashboard/workstations/actions";
+import { PairAgentForm } from "@/app/dashboard/workstations/pair-agent-form";
 import { getMemberships } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 
-type WorkstationsPageProps = {
-  searchParams: Promise<{ error?: string; message?: string }>;
-};
+type WorkstationsPageProps = { searchParams: Promise<{ error?: string; message?: string }> };
 
 export default async function WorkstationsPage({ searchParams }: WorkstationsPageProps) {
   const memberships = await getMemberships();
@@ -13,11 +12,9 @@ export default async function WorkstationsPage({ searchParams }: WorkstationsPag
   const params = await searchParams;
   const supabase = await createClient();
   const { data: workstations } = organizationId
-    ? await supabase
-        .from("workstations")
-        .select("id, name, status, last_seen_at, created_at")
-        .eq("organization_id", organizationId)
-        .order("created_at", { ascending: true })
+    ? await supabase.from("workstations")
+        .select("id, name, status, last_seen_at, paired_at, agent_version, created_at")
+        .eq("organization_id", organizationId).order("created_at", { ascending: true })
     : { data: [] };
 
   return (
@@ -33,7 +30,13 @@ export default async function WorkstationsPage({ searchParams }: WorkstationsPag
         <div className="workstation-list">
           {workstations?.length ? workstations.map((workstation) => (
             <article key={workstation.id} className="workstation-card">
-              <div><h2>{workstation.name}</h2><p>Agent non lié · En attente d’installation</p></div>
+              <div>
+                <h2>{workstation.name}</h2>
+                <p>{workstation.paired_at
+                  ? `Agent ${workstation.agent_version ?? "lié"} · Dernier contact ${workstation.last_seen_at ? new Date(workstation.last_seen_at).toLocaleString("fr-FR") : "inconnu"}`
+                  : "Agent non lié · En attente d’installation"}</p>
+                <PairAgentForm workstationId={workstation.id} />
+              </div>
               <span className={`status-pill ${String(workstation.status).toLowerCase()}`}>{workstation.status}</span>
             </article>
           )) : <article><h2>Aucun poste</h2><p>Enregistrez le poste du comptoir pour générer son premier QR.</p></article>}

@@ -2,14 +2,23 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Djeli'S_Print Agent</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main>
-      <p>DJELI'S_PRINT</p>
+      <p class="eyebrow">DJELI'S_PRINT</p>
       <h1>Print Agent</h1>
-      <p>Le socle sécurisé de l’agent est installé. La liaison au poste arrive à l’étape 8.</p>
+      <div id="status" class="status">Initialisation…</div>
+      <form id="pair-form" hidden>
+        <label>Code d’appairage<input id="pair-code" autocomplete="one-time-code" minlength="32" required /></label>
+        <button type="submit">LIER CE POSTE</button>
+      </form>
+      <p id="message" role="status"></p>
+      <footer><span id="platform"></span><span id="server"></span></footer>
     </main>
+    <script src="renderer.js"></script>
   </body>
 </html>

@@ -8,6 +8,7 @@
     "dev": "tsc -p tsconfig.json --watch",
     "lint": "tsc --noEmit",
     "start": "electron dist/main/index.js",
+    "test": "tsc -p tsconfig.json && node --test dist/core/*.test.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

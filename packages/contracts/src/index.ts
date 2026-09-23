@@ -35,3 +35,24 @@ export interface PrinterCapabilitySnapshot {
   maxHeightMm: number | null;
   capturedAt: string;
 }
+
+export interface AgentPrinterSnapshot {
+  systemName: string;
+  displayName: string;
+  isDefault: boolean;
+  formats: PaperFormat[];
+  supportsColor: boolean;
+  supportsDuplex: boolean;
+}
+
+export interface AgentPrintJob {
+  job_id: string;
+  document_id: string;
+  mime_type: string;
+  printer_system_name: string;
+  copies: number;
+  color_mode: ColorMode;
+  orientation: Orientation;
+  paper_format: PaperFormat;
+  downloadUrl: string;
+}

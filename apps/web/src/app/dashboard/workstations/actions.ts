@@ -4,6 +4,24 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getMemberships, requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { createAgentSecret, hashAgentSecret } from "@/lib/agent-crypto";
+
+export type PairingState = { code?: string; error?: string; expiresAt?: string };
+
+export async function createPairingCode(_state: PairingState, formData: FormData): Promise<PairingState> {
+  await requireUser();
+  const membership = (await getMemberships())[0];
+  if (!membership || !["OWNER", "ADMIN"].includes(membership.role)) return { error: "Droits administrateur requis." };
+  const workstationId = String(formData.get("workstationId") ?? "");
+  const code = createAgentSecret(24);
+  const expiresAt = new Date(Date.now() + 10 * 60_000).toISOString();
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("workstations").update({
+    pairing_secret_hash: hashAgentSecret(code), pairing_expires_at: expiresAt,
+  }).eq("id", workstationId).eq("organization_id", membership.organization_id).select("id").maybeSingle();
+  if (error || !data) return { error: "Impossible de créer le code d’appairage." };
+  return { code, expiresAt };
+}
 
 export async function registerWorkstation(formData: FormData) {
   await requireUser();

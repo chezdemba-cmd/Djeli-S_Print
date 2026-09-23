@@ -1,6 +1,6 @@
-import type { PrinterCapabilitySnapshot } from "@djelis-print/contracts";
+import type { AgentPrinterSnapshot } from "@djelis-print/contracts";
 
 export interface PrinterProvider {
-  discover(): Promise<PrinterCapabilitySnapshot[]>;
+  discover(): Promise<AgentPrinterSnapshot[]>;
   print(input: { printerId: string; filePath: string; copies: number }): Promise<void>;
 }
