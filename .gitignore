@@ -11,3 +11,4 @@ coverage/
 apps/print-agent/.vite/
 apps/print-agent/temp/
 .supabase/
+supabase/.temp/

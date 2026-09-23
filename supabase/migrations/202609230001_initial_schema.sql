@@ -803,7 +803,8 @@ create policy documents_storage_select_member on storage.objects for select to a
   using (
     bucket_id = 'documents'
     and (storage.foldername(name))[1] in (
-      select organization_id::text from private.current_organization_ids()
+      select member_organizations.organization_id::text
+      from private.current_organization_ids() as member_organizations(organization_id)
     )
   );
 create policy documents_storage_insert_operator on storage.objects for insert to authenticated
