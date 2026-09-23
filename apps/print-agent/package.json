@@ -1,0 +1,21 @@
+{
+  "name": "@djelis-print/print-agent",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/main/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/copy-renderer.mjs",
+    "dev": "tsc -p tsconfig.json --watch",
+    "lint": "tsc --noEmit",
+    "start": "electron dist/main/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@djelis-print/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "electron": "44.4.3",
+    "typescript": "5.9.2"
+  }
+}

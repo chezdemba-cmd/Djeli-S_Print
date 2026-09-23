@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--a:#0E7490;--a-dark:#0B5A70;--a-soft:#E6F2F5;--w:#F59E0B;--w-soft:#FEF3D6;--ink:#0F1A20;--ink-2:#4A5A63;--ink-3:#7C8B94;--line:#E3E8EA;--bg:#F5F7F7;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Manrope,"Helvetica Neue",Helvetica,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;}
+a{color:var(--a);text-decoration:none;}
+a:hover{color:var(--a-dark);text-decoration:underline;}
+button{font-family:inherit;}
+@keyframes dcFadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+@keyframes dcPulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+@keyframes dcSweep{from{transform:translateX(-100%);}to{transform:translateX(220%);}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;flex-direction:column;">
+
+  <div style="position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:20px;padding:12px 22px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:26px;height:26px;border-radius:7px;background:var(--a);display:flex;align-items:center;justify-content:center;">
+        <div style="width:10px;height:10px;border:2px solid #fff;border-radius:2px;"></div>
+      </div>
+      <div style="font-weight:800;font-size:15px;letter-spacing:-.01em;">Presspoint</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);padding-top:2px;">prototype v1</div>
+    </div>
+    <div style="display:flex;gap:4px;padding:3px;background:#EEF1F2;border-radius:10px;flex:0 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none;">
+      <button onClick="{{ go.archi }}" style="{{ tab.archi }}">{{ t.navArchi }}</button>
+      <button onClick="{{ go.dash }}" style="{{ tab.dash }}">{{ t.navDash }}</button>
+      <button onClick="{{ go.console }}" style="{{ tab.console }}">{{ t.navConsole }}</button>
+      <button onClick="{{ go.qr }}" style="{{ tab.qr }}">{{ t.navQr }}</button>
+      <button onClick="{{ go.ds }}" style="{{ tab.ds }}">{{ t.navDs }}</button>
+      <button onClick="{{ go.mobile }}" style="{{ tab.mobile }}">{{ t.navMobile }}</button>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:4px;padding:3px;background:#EEF1F2;border-radius:10px;flex:0 0 auto;">
+      <button onClick="{{ setFr }}" style="{{ tab.fr }}">FR</button>
+      <button onClick="{{ setEn }}" style="{{ tab.en }}">EN</button>
+    </div>
+  </div>
+
+  <sc-if value="{{ isArchi }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:44px 28px 80px;display:flex;justify-content:center;">
+      <div style="width:100%;max-width:1180px;display:flex;flex-direction:column;gap:34px;">
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--a);">{{ t.archiKicker }}</div>
+          <h1 style="margin:0;font-size:38px;line-height:1.1;letter-spacing:-.025em;font-weight:800;max-width:18ch;">{{ t.archiTitle }}</h1>
+          <p style="margin:0;max-width:62ch;font-size:15px;line-height:1.65;color:var(--ink-2);text-wrap:pretty;">{{ t.archiLead }}</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;">
+          <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 1px 2px rgba(16,26,32,.04);display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;"><div style="width:22px;height:22px;border-radius:6px;background:var(--a-soft);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--a);font-weight:600;">1</div><div style="font-weight:700;font-size:14px;">{{ t.step1 }}</div></div>
+            <div style="font-size:13px;line-height:1.6;color:var(--ink-2);">{{ t.step1d }}</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 1px 2px rgba(16,26,32,.04);display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;"><div style="width:22px;height:22px;border-radius:6px;background:var(--a-soft);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--a);font-weight:600;">2</div><div style="font-weight:700;font-size:14px;">{{ t.step2 }}</div></div>
+            <div style="font-size:13px;line-height:1.6;color:var(--ink-2);">{{ t.step2d }}</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 1px 2px rgba(16,26,32,.04);display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;"><div style="width:22px;height:22px;border-radius:6px;background:var(--a-soft);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--a);font-weight:600;">3</div><div style="font-weight:700;font-size:14px;">{{ t.step3 }}</div></div>
+            <div style="font-size:13px;line-height:1.6;color:var(--ink-2);">{{ t.step3d }}</div>
+          </div>
+          <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 1px 2px rgba(16,26,32,.04);display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;"><div style="width:22px;height:22px;border-radius:6px;background:var(--w-soft);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A5A04;font-weight:600;">4</div><div style="font-weight:700;font-size:14px;">{{ t.step4 }}</div></div>
+            <div style="font-size:13px;line-height:1.6;color:var(--ink-2);">{{ t.step4d }}</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;">
+          <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 1px 2px rgba(16,26,32,.04);">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;">{{ t.trackClient }}</div>
+            <sc-for list="{{ mapClient }}" as="row" hint-placeholder-count="5">
+              <div style="display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line);">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--a);min-width:26px;padding-top:2px;">{{ row.id }}</div>
+                <div style="display:flex;flex-direction:column;gap:3px;">
+                  <div style="font-size:13.5px;font-weight:600;">{{ row.name }}</div>
+                  <div style="font-size:12.5px;color:var(--ink-3);line-height:1.5;">{{ row.note }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 1px 2px rgba(16,26,32,.04);">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px;">{{ t.trackShop }}</div>
+            <sc-for list="{{ mapShop }}" as="row" hint-placeholder-count="8">
+              <div style="display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line);">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--a);min-width:26px;padding-top:2px;">{{ row.id }}</div>
+                <div style="display:flex;flex-direction:column;gap:3px;">
+                  <div style="font-size:13.5px;font-weight:600;">{{ row.name }}</div>
+                  <div style="font-size:12.5px;color:var(--ink-3);line-height:1.5;">{{ row.note }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:#0F1A20;border-radius:16px;padding:24px 26px;color:#fff;display:flex;flex-wrap:wrap;gap:28px;align-items:center;">
+          <div style="max-width:40ch;">
+            <div style="font-weight:700;font-size:15px;margin-bottom:6px;">{{ t.priv }}</div>
+            <div style="font-size:13px;line-height:1.6;color:#A9B7BD;">{{ t.privD }}</div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-left:auto;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.08);">{{ t.privA }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.08);">{{ t.privB }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;padding:8px 12px;border-radius:8px;background:rgba(255,255,255,.08);">{{ t.privC }}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isDash }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:22px;">
+      <div ref="{{ stageRef }}" style="{{ stageStyle }}">
+      <div style="{{ shellStyle }}">
+
+        <div style="width:228px;flex:0 0 228px;background:#FBFCFC;border-right:1px solid var(--line);padding:18px 14px;display:flex;flex-direction:column;gap:18px;">
+          <div style="display:flex;align-items:center;gap:10px;padding:4px 6px;">
+            <div style="width:30px;height:30px;border-radius:8px;background:var(--a);display:flex;align-items:center;justify-content:center;">
+              <div style="width:11px;height:11px;border:2px solid #fff;border-radius:2px;"></div>
+            </div>
+            <div>
+              <div style="font-weight:800;font-size:14px;line-height:1.1;">Imprimerie Vallée</div>
+              <div style="font-size:11px;color:var(--ink-3);">Lyon 3e · Poste 02</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);padding:6px 10px;">{{ t.grpWork }}</div>
+            <button onClick="{{ nav.dashboard }}" style="{{ ns.dashboard }}"><span style="width:16px;height:16px;border:1.6px solid currentColor;border-radius:4px;display:inline-block;opacity:.85;"></span>{{ t.mDash }}</button>
+            <button onClick="{{ nav.jobs }}" style="{{ ns.jobs }}"><span style="width:16px;height:16px;border:1.6px solid currentColor;border-radius:4px;display:inline-block;opacity:.85;"></span>{{ t.mJobs }}</button>
+            <button onClick="{{ nav.files }}" style="{{ ns.files }}"><span style="width:16px;height:16px;border:1.6px solid currentColor;border-radius:4px;display:inline-block;opacity:.85;"></span>{{ t.mFiles }}<span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10.5px;background:var(--w);color:#3B2600;border-radius:20px;padding:1px 7px;font-weight:600;">4</span></button>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);padding:14px 10px 6px;">{{ t.grpShop }}</div>
+            <button onClick="{{ nav.machines }}" style="{{ ns.machines }}"><span style="width:16px;height:16px;border:1.6px solid currentColor;border-radius:50%;display:inline-block;opacity:.85;"></span>{{ t.mMach }}</button>
+            <button onClick="{{ nav.media }}" style="{{ ns.media }}"><span style="width:16px;height:16px;border:1.6px solid currentColor;border-radius:4px;display:inline-block;opacity:.85;"></span>{{ t.mMedia }}</button>
+            <button onClick="{{ nav.pricing }}" style="{{ ns.pricing }}"><span style="width:16px;height:16px;border:1.6px solid currentColor;border-radius:4px;display:inline-block;opacity:.85;"></span>{{ t.mPrice }}</button>
+            <button onClick="{{ nav.history }}" style="{{ ns.history }}"><span style="width:16px;height:16px;border:1.6px solid currentColor;border-radius:50%;display:inline-block;opacity:.85;"></span>{{ t.mHist }}</button>
+            <button onClick="{{ nav.settings }}" style="{{ ns.settings }}"><span style="width:16px;height:16px;border:1.6px solid currentColor;border-radius:4px;display:inline-block;opacity:.85;"></span>{{ t.mSet }}</button>
+          </div>
+          <div style="margin-top:auto;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:8px;height:8px;border-radius:50%;background:#15803D;animation:dcPulse 2.4s infinite;"></span>
+              <span style="font-size:12.5px;font-weight:600;">Print Agent</span>
+            </div>
+            <div style="font-size:11.5px;color:var(--ink-3);line-height:1.5;">{{ t.agentOk }}</div>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+
+          <div style="display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid var(--line);">
+            <div style="font-size:16px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;">{{ pageTitle }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-3);">{{ t.today }}</div>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+              <button onClick="{{ go.qr }}" style="display:flex;align-items:center;gap:8px;height:34px;padding:0 14px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:600;color:var(--ink);cursor:pointer;" style-hover="background:#F3F6F6;">{{ t.qrScreen }}</button>
+              <div style="position:relative;width:34px;height:34px;border:1px solid var(--line);border-radius:9px;display:flex;align-items:center;justify-content:center;background:#fff;cursor:pointer;">
+                <span style="width:13px;height:13px;border:1.6px solid var(--ink-2);border-radius:4px;display:inline-block;"></span>
+                <span style="position:absolute;top:-4px;right:-4px;min-width:17px;height:17px;border-radius:20px;background:var(--w);color:#3B2600;font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;">4</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:9px;padding-left:12px;border-left:1px solid var(--line);">
+                <div style="width:30px;height:30px;border-radius:50%;background:var(--a-soft);color:var(--a);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">MC</div>
+                <div style="line-height:1.15;">
+                  <div style="font-size:12.5px;font-weight:600;">Marie Chevalier</div>
+                  <div style="font-size:11px;color:var(--ink-3);">{{ t.role }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex:1;min-height:0;overflow:auto;background:#FBFCFC;">
+          <sc-if value="{{ pgDash }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:20px 22px 30px;display:flex;flex-direction:column;gap:20px;">
+
+            <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;">
+              <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6">
+                <div style="background:#fff;border:1px solid var(--line);border-radius:13px;padding:14px 15px;display:flex;flex-direction:column;gap:6px;box-shadow:0 1px 2px rgba(16,26,32,.04);">
+                  <div style="font-size:11.5px;color:var(--ink-3);font-weight:600;line-height:1.35;min-height:31px;">{{ k.label }}</div>
+                  <div style="font-size:25px;font-weight:800;letter-spacing:-.03em;">{{ k.value }}</div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ k.deltaColor }};">{{ k.delta }}</div>
+                </div>
+              </sc-for>
+            </div>
+
+            <div style="display:grid;grid-template-columns:minmax(0,2.15fr) minmax(0,1fr);gap:16px;align-items:start;">
+
+              <div style="background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 2px rgba(16,26,32,.04);">
+                <div style="display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--line);">
+                  <div style="font-size:14.5px;font-weight:700;">{{ t.newJobs }}</div>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--a-soft);color:var(--a);border-radius:20px;padding:2px 8px;font-weight:600;">4</span>
+                  <button onClick="{{ simulateArrival }}" style="margin-left:auto;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-3);border:none;background:transparent;cursor:pointer;padding:4px 6px;border-radius:7px;" style-hover="background:#F3F6F6;color:var(--ink);">
+                    <span style="width:7px;height:7px;border-radius:50%;background:var(--a);animation:dcPulse 1.8s infinite;"></span>{{ t.live }}
+                  </button>
+                </div>
+                <div style="padding:16px 18px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;">
+                  <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="4">
+                    <div style="border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;display:flex;flex-direction:column;animation:dcFadeUp .35s ease both;" style-hover="border-color:#C9D4D8;box-shadow:0 6px 18px rgba(16,26,32,.07);">
+                      <div style="display:flex;gap:14px;padding:14px;">
+                        <div style="position:relative;width:76px;flex:0 0 76px;height:102px;border:1px solid var(--line);border-radius:7px;background-image:repeating-linear-gradient(135deg,#F1F4F5 0 6px,#FFFFFF 6px 12px);display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;overflow:hidden;">
+                          <div style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:var(--ink-3);">{{ j.pagesShort }}</div>
+                          <div style="position:absolute;top:6px;left:6px;right:6px;height:7px;background:#E7ECEE;border-radius:2px;"></div>
+                          <div style="position:absolute;top:18px;left:6px;width:60%;height:5px;background:#EFF2F3;border-radius:2px;"></div>
+                          <div style="position:absolute;top:28px;left:6px;right:6px;height:5px;background:#EFF2F3;border-radius:2px;"></div>
+                        </div>
+                        <div style="min-width:0;display:flex;flex-direction:column;gap:7px;flex:1;">
+                          <div style="display:flex;align-items:flex-start;gap:8px;">
+                            <div style="font-size:13.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ j.name }}</div>
+                            <div style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;background:{{ j.statusBg }};color:{{ j.statusFg }};white-space:nowrap;">{{ j.status }}</div>
+                          </div>
+                          <div style="display:flex;flex-wrap:wrap;gap:4px 6px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-2);">
+                            <span style="background:#F3F6F6;border-radius:5px;padding:2px 6px;">{{ j.type }}</span>
+                            <span style="background:#F3F6F6;border-radius:5px;padding:2px 6px;">{{ j.pages }}</span>
+                            <span style="background:#F3F6F6;border-radius:5px;padding:2px 6px;">{{ j.size }}</span>
+                            <span style="background:#F3F6F6;border-radius:5px;padding:2px 6px;">{{ j.format }}</span>
+                            <span style="background:#F3F6F6;border-radius:5px;padding:2px 6px;">{{ j.dpi }}</span>
+                          </div>
+                          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:11.5px;color:var(--ink-3);margin-top:auto;min-width:0;">
+                            <span>{{ j.time }}</span>
+                            <span style="width:3px;height:3px;border-radius:50%;background:var(--ink-3);"></span>
+                            <span style="color:{{ j.ttlColor }};">{{ j.ttl }}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div style="display:flex;gap:8px;padding:0 14px 14px;">
+                        <button onClick="{{ j.prepare }}" style="flex:1;height:34px;border-radius:9px;border:none;background:var(--a);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;" style-hover="background:var(--a-dark);">{{ t.prepare }}</button>
+                        <button style="height:34px;padding:0 13px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;" style-hover="background:#F3F6F6;">{{ t.preview }}</button>
+                        <button onClick="{{ j.remove }}" style="width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:#fff;color:#B91C1C;font-size:14px;cursor:pointer;line-height:1;" style-hover="background:#FEF2F2;border-color:#FECACA;">×</button>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:16px;">
+
+                <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 1px 2px rgba(16,26,32,.04);">
+                  <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:14px;">
+                    <div style="font-size:14.5px;font-weight:700;">{{ t.chart }}</div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);margin-left:auto;">{{ t.chartUnit }}</div>
+                  </div>
+                  <div style="display:flex;align-items:stretch;gap:6px;height:112px;">
+                    <sc-for list="{{ bars }}" as="b" hint-placeholder-count="10">
+                      <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:6px;">
+                        <div style="width:100%;border-radius:4px 4px 0 0;background:{{ b.color }};height:{{ b.h }};flex:0 0 auto;"></div>
+                        <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--ink-3);">{{ b.label }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+
+                <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 1px 2px rgba(16,26,32,.04);">
+                  <div style="font-size:14.5px;font-weight:700;margin-bottom:12px;">{{ t.queue }}</div>
+                  <div style="display:flex;flex-direction:column;gap:10px;">
+                    <sc-for list="{{ queue }}" as="q" hint-placeholder-count="5">
+                      <div style="display:flex;align-items:center;gap:10px;">
+                        <div style="width:8px;height:8px;border-radius:2px;background:{{ q.color }};"></div>
+                        <div style="font-size:13px;font-weight:600;">{{ q.label }}</div>
+                        <div style="flex:1;height:6px;border-radius:3px;background:#F0F3F4;overflow:hidden;">
+                          <div style="height:100%;border-radius:3px;background:{{ q.color }};width:{{ q.w }};"></div>
+                        </div>
+                        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-2);width:18px;text-align:right;">{{ q.n }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+
+                <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:0 1px 2px rgba(16,26,32,.04);">
+                  <div style="font-size:14.5px;font-weight:700;margin-bottom:12px;">{{ t.machines }}</div>
+                  <div style="display:flex;flex-direction:column;gap:10px;">
+                    <sc-for list="{{ machines }}" as="m" hint-placeholder-count="3">
+                      <div style="display:flex;align-items:center;gap:10px;padding:10px 11px;border:1px solid var(--line);border-radius:11px;">
+                        <span style="width:8px;height:8px;border-radius:50%;background:{{ m.color }};"></span>
+                        <div style="min-width:0;">
+                          <div style="font-size:13px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ m.name }}</div>
+                          <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3);">{{ m.spec }}</div>
+                        </div>
+                        <div style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.06em;color:{{ m.color }};">{{ m.state }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ pgQueue }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:20px 22px 30px;display:flex;gap:14px;align-items:flex-start;">
+              <sc-for list="{{ kanban }}" as="col" hint-placeholder-count="5">
+                <div style="flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px;">
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="width:8px;height:8px;border-radius:2px;background:{{ col.color }};"></span>
+                    <div style="font-size:13px;font-weight:700;">{{ col.label }}</div>
+                    <div style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);">{{ col.n }}</div>
+                  </div>
+                  <sc-for list="{{ col.cards }}" as="c" hint-placeholder-count="2">
+                    <div style="border:1px solid var(--line);border-radius:11px;padding:11px;display:flex;flex-direction:column;gap:7px;background:#fff;" style-hover="border-color:#C9D4D8;box-shadow:0 4px 14px rgba(16,26,32,.07);">
+                      <div style="font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ c.name }}</div>
+                      <div style="display:flex;flex-wrap:wrap;gap:4px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-2);">
+                        <span style="background:#F3F6F6;border-radius:5px;padding:2px 6px;">{{ c.fmt }}</span>
+                        <span style="background:#F3F6F6;border-radius:5px;padding:2px 6px;">{{ c.qty }}</span>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:var(--ink-3);">
+                        <span style="width:6px;height:6px;border-radius:50%;background:{{ col.color }};flex:0 0 6px;"></span>{{ c.meta }}
+                      </div>
+                      <sc-if value="{{ c.hasBar }}" hint-placeholder-val="{{ false }}">
+                        <div style="height:5px;border-radius:3px;background:#F0F3F4;overflow:hidden;">
+                          <div style="height:100%;border-radius:3px;background:{{ col.color }};width:{{ c.bar }};"></div>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ pgFiles }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:20px 22px 30px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:start;">
+              <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="4">
+                <div style="border:1px solid var(--line);border-radius:14px;background:#fff;padding:14px;display:flex;flex-direction:column;gap:11px;">
+                  <div style="height:150px;border:1px solid var(--line);border-radius:8px;background-image:repeating-linear-gradient(135deg,#F1F4F5 0 6px,#FFFFFF 6px 12px);"></div>
+                  <div style="display:flex;align-items:flex-start;gap:8px;">
+                    <div style="font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;">{{ j.name }}</div>
+                    <div style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;background:{{ j.statusBg }};color:{{ j.statusFg }};white-space:nowrap;">{{ j.status }}</div>
+                  </div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-2);line-height:1.6;">{{ j.type }} · {{ j.pages }} · {{ j.size }}<br>{{ j.format }} · {{ j.dpi }}</div>
+                  <div style="font-size:11.5px;color:{{ j.ttlColor }};">{{ j.ttl }}</div>
+                  <button onClick="{{ j.prepare }}" style="height:34px;border-radius:9px;border:none;background:var(--a);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;" style-hover="background:var(--a-dark);">{{ t.prepare }}</button>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ pgMachines }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:20px 22px 30px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start;">
+              <sc-for list="{{ machinePage }}" as="m" hint-placeholder-count="4">
+                <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px;">
+                  <div style="display:flex;align-items:flex-start;gap:12px;">
+                    <div style="width:44px;height:44px;border-radius:11px;background:#F3F6F6;border:1px solid var(--line);flex:0 0 44px;"></div>
+                    <div style="min-width:0;">
+                      <div style="font-size:15px;font-weight:750;">{{ m.name }}</div>
+                      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);">{{ m.driver }}</div>
+                    </div>
+                    <div style="margin-left:auto;display:flex;align-items:center;gap:7px;padding:5px 11px;border-radius:7px;background:{{ m.bg }};color:{{ m.dot }};font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:700;letter-spacing:.06em;">
+                      <span style="width:7px;height:7px;border-radius:50%;background:{{ m.dot }};flex:0 0 7px;"></span>{{ m.state }}
+                    </div>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                    <sc-for list="{{ m.tags }}" as="tg" hint-placeholder-count="3">
+                      <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;background:#F3F6F6;border-radius:6px;padding:4px 8px;color:var(--ink-2);">{{ tg }}</span>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:8px;">
+                    <sc-for list="{{ m.levels }}" as="lv" hint-placeholder-count="2">
+                      <div style="display:flex;align-items:center;gap:10px;">
+                        <div style="font-size:12px;color:var(--ink-2);width:96px;">{{ lv.label }}</div>
+                        <div style="flex:1;height:6px;border-radius:3px;background:#F0F3F4;overflow:hidden;">
+                          <div style="height:100%;border-radius:3px;background:{{ lv.color }};width:{{ lv.w }};"></div>
+                        </div>
+                        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);width:38px;text-align:right;">{{ lv.w }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;gap:8px;">
+                    <button style="height:34px;padding:0 14px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:12.5px;font-weight:650;color:var(--ink);cursor:pointer;" style-hover="background:#F3F6F6;">{{ t.mSettings }}</button>
+                    <button style="height:34px;padding:0 14px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:12.5px;font-weight:650;color:var(--ink);cursor:pointer;" style-hover="background:#F3F6F6;">{{ t.mTest }}</button>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ pgPricing }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:20px 22px 30px;display:flex;flex-direction:column;gap:14px;">
+              <div style="background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;">
+                <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;padding:12px 18px;background:#FBFCFC;border-bottom:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">
+                  <div>{{ t.pItem }}</div><div>{{ t.pUnit }}</div><div>{{ t.pPrice }}</div><div>{{ t.pMargin }}</div>
+                </div>
+                <sc-for list="{{ priceRows }}" as="r" hint-placeholder-count="8">
+                  <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;padding:12px 18px;border-bottom:1px solid var(--line);align-items:center;" style-hover="background:#FBFCFC;">
+                    <div style="font-size:13.5px;font-weight:650;">{{ r.item }}</div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink-2);">{{ r.unit }}</div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;">{{ r.price }}</div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:{{ r.mColor }};">{{ r.margin }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ pgMedia }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:20px 22px 30px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start;">
+              <sc-for list="{{ mediaPage }}" as="md" hint-placeholder-count="6">
+                <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;">
+                  <div style="height:64px;border-radius:9px;border:1px solid var(--line);background-image:repeating-linear-gradient(135deg,#F1F4F5 0 6px,#FFFFFF 6px 12px);"></div>
+                  <div style="display:flex;align-items:flex-start;gap:8px;">
+                    <div style="font-size:14px;font-weight:700;">{{ md.name }}</div>
+                    <div style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;background:{{ md.bg }};color:{{ md.color }};white-space:nowrap;">{{ md.stockLabel }}</div>
+                  </div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);line-height:1.6;">{{ md.spec }}<br>{{ md.machines }}</div>
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="flex:1;height:6px;border-radius:3px;background:#F0F3F4;overflow:hidden;">
+                      <div style="height:100%;border-radius:3px;background:{{ md.color }};width:{{ md.w }};"></div>
+                    </div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;">{{ md.price }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ pgHistory }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:20px 22px 30px;">
+              <div style="background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;">
+                <div style="display:grid;grid-template-columns:90px 2fr 1.2fr 1fr .9fr 1.3fr;gap:12px;padding:12px 18px;background:#FBFCFC;border-bottom:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">
+                  <div>{{ t.hRef }}</div><div>{{ t.hFile }}</div><div>{{ t.hSpec }}</div><div>{{ t.hMachine }}</div><div>{{ t.hPrice }}</div><div>{{ t.hFile2 }}</div>
+                </div>
+                <sc-for list="{{ history }}" as="h" hint-placeholder-count="8">
+                  <div style="display:grid;grid-template-columns:90px 2fr 1.2fr 1fr .9fr 1.3fr;gap:12px;padding:12px 18px;border-bottom:1px solid var(--line);align-items:center;" style-hover="background:#FBFCFC;">
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--a);font-weight:600;">{{ h.ref }}</div>
+                    <div style="font-size:13px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ h.name }}</div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-2);">{{ h.spec }}</div>
+                    <div style="font-size:12.5px;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ h.machine }}</div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;">{{ h.price }}</div>
+                    <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:{{ h.color }};">
+                      <span style="width:7px;height:7px;border-radius:50%;background:{{ h.color }};flex:0 0 7px;"></span>{{ h.state }}
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ pgSettings }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:20px 22px 30px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start;max-width:1000px;">
+              <sc-for list="{{ settingsCards }}" as="sc" hint-placeholder-count="4">
+                <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px;">
+                  <div style="font-size:14px;font-weight:700;">{{ sc.title }}</div>
+                  <sc-for list="{{ sc.rows }}" as="r" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line);">
+                      <div style="font-size:13px;color:var(--ink-2);">{{ r.k }}</div>
+                      <div style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:12.5px;font-weight:600;color:{{ r.color }};text-align:right;">{{ r.v }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ pgEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:90px 22px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;">
+              <div style="width:58px;height:58px;border-radius:15px;border:1.5px dashed #C9D4D8;background:#fff;"></div>
+              <div style="font-size:16px;font-weight:700;">{{ emptyTitle }}</div>
+              <div style="font-size:13.5px;color:var(--ink-2);max-width:42ch;line-height:1.6;">{{ t.emptyLead }}</div>
+              <button onClick="{{ nav.dashboard }}" style="margin-top:6px;height:38px;padding:0 18px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:650;color:var(--ink);cursor:pointer;" style-hover="background:#F3F6F6;">{{ t.backDash }}</button>
+            </div>
+          </sc-if>
+
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;right:24px;bottom:24px;z-index:60;display:flex;align-items:center;gap:11px;max-width:380px;padding:13px 16px;border-radius:12px;background:#0F1A20;color:#fff;font-size:13px;font-weight:600;box-shadow:0 12px 30px rgba(16,26,32,.28);animation:dcFadeUp .28s ease both;">
+      <span style="width:8px;height:8px;border-radius:50%;background:{{ toastDot }};flex:0 0 8px;"></span>
+      <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ toastMsg }}</span>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isDs }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:44px 28px 80px;display:flex;justify-content:center;">
+      <div style="width:100%;max-width:1180px;display:flex;flex-direction:column;gap:30px;">
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--a);">Design system</div>
+          <h1 style="margin:0;font-size:38px;line-height:1.1;letter-spacing:-.025em;font-weight:800;">Presspoint UI</h1>
+          <p style="margin:0;max-width:60ch;font-size:15px;line-height:1.65;color:var(--ink-2);text-wrap:pretty;">{{ t.dsLead }}</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;">
+          <sc-for list="{{ swatches }}" as="sw" hint-placeholder-count="8">
+            <div style="background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;">
+              <div style="height:66px;background:{{ sw.hex }};"></div>
+              <div style="padding:10px 12px;">
+                <div style="font-size:12.5px;font-weight:650;">{{ sw.name }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);">{{ sw.hex }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:18px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">Typographie</div>
+          <div style="font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1.1;">Manrope 800 · 40/44 — titres</div>
+          <div style="font-size:20px;font-weight:700;letter-spacing:-.02em;">Manrope 700 · 20/26 — sous-titres</div>
+          <div style="font-size:15px;line-height:1.65;color:var(--ink-2);max-width:62ch;">Manrope 400 · 15/25 — texte courant. Lisible à distance sur un poste de comptoir, dense sans être serré.</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink-2);">IBM Plex Mono · 13 — valeurs techniques, formats, dpi, prix, références</div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;align-items:start;">
+
+          <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">Boutons</div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
+              <button style="height:42px;padding:0 22px;border-radius:11px;border:none;background:var(--w);color:#3B2600;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 2px 10px rgba(245,158,11,.35);">IMPRIMER</button>
+              <button style="height:42px;padding:0 20px;border-radius:11px;border:none;background:var(--a);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;">Préparer</button>
+              <button style="height:42px;padding:0 18px;border-radius:11px;border:1px solid var(--line);background:#fff;font-size:13.5px;font-weight:650;color:var(--ink);cursor:pointer;">Aperçu</button>
+              <button style="height:42px;padding:0 18px;border-radius:11px;border:1px solid var(--line);background:#F3F6F6;font-size:13.5px;font-weight:650;color:#A9B5BA;cursor:not-allowed;">Désactivé</button>
+              <button style="height:42px;padding:0 18px;border-radius:11px;border:1px solid #FECACA;background:#fff;font-size:13.5px;font-weight:650;color:#B91C1C;cursor:pointer;">Supprimer</button>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">Champs</div>
+            <input type="text" value="200" style="height:42px;padding:0 13px;border-radius:10px;border:1px solid var(--line);font-size:14px;font-family:'IBM Plex Mono',monospace;color:var(--ink);background:#fff;">
+            <select style="height:42px;padding:0 11px;border-radius:10px;border:1px solid var(--line);font-size:14px;font-family:Manrope,sans-serif;color:var(--ink);background:#fff;">
+              <option>HP LaserJet Pro M480</option>
+              <option>Canon imagePROGRAF</option>
+            </select>
+            <input type="text" value="-30" style="height:42px;padding:0 13px;border-radius:10px;border:1.5px solid #B91C1C;font-size:14px;font-family:'IBM Plex Mono',monospace;color:#B91C1C;background:#FEF2F2;">
+            <div style="font-size:12px;color:#B91C1C;">Valeur hors des limites de la machine.</div>
+          </div>
+
+          <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">Badges &amp; états</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;padding:4px 9px;border-radius:6px;background:var(--a-soft);color:var(--a);">NOUVEAU</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;padding:4px 9px;border-radius:6px;background:#EAF6EF;color:#15803D;">ONLINE</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;padding:4px 9px;border-radius:6px;background:#FEF3D6;color:#8A5A04;">BUSY</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;padding:4px 9px;border-radius:6px;background:#FEF2F2;color:#B91C1C;">OFFLINE</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;padding:4px 9px;border-radius:6px;background:#F3F6F6;color:var(--ink-2);">ARCHIVÉ</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:11px;background:#0F1A20;color:#fff;font-size:12.5px;width:fit-content;">Suppression dans 18 min</div>
+          </div>
+
+          <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">Notifications</div>
+            <div style="display:flex;gap:10px;padding:13px;border-radius:12px;background:var(--a-soft);border:1px solid #CFE4EA;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--a);margin-top:5px;flex:0 0 8px;"></span>
+              <div style="font-size:12.5px;line-height:1.55;color:#0A4A5C;">Nouveau fichier reçu — devis-2026-vallee.pdf</div>
+            </div>
+            <div style="display:flex;gap:10px;padding:13px;border-radius:12px;background:#FEF3D6;border:1px solid #F7DFA8;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--w);margin-top:5px;flex:0 0 8px;"></span>
+              <div style="font-size:12.5px;line-height:1.55;color:#6B4A05;">Encre faible sur Canon imagePROGRAF (42 %)</div>
+            </div>
+            <div style="display:flex;gap:10px;padding:13px;border-radius:12px;background:#FEF2F2;border:1px solid #FECACA;">
+              <span style="width:8px;height:8px;border-radius:50%;background:#B91C1C;margin-top:5px;flex:0 0 8px;"></span>
+              <div style="font-size:12.5px;line-height:1.55;color:#7F1D1D;">Xerox VersaLink hors ligne — travail réaffecté</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">{{ t.dsStates }}</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;">
+            <sc-for list="{{ emptyStates }}" as="es" hint-placeholder-count="4">
+              <div style="background:#fff;border:1px solid var(--line);border-radius:16px;padding:26px 22px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;min-height:230px;justify-content:center;">
+                <div style="width:46px;height:46px;border-radius:13px;border:1.5px dashed {{ es.color }};background:{{ es.bg }};"></div>
+                <div style="font-size:14.5px;font-weight:700;">{{ es.title }}</div>
+                <div style="font-size:12.5px;line-height:1.6;color:var(--ink-2);max-width:30ch;">{{ es.body }}</div>
+                <button style="margin-top:6px;height:36px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:#fff;font-size:12.5px;font-weight:650;color:var(--ink);cursor:pointer;" style-hover="background:#F3F6F6;">{{ es.action }}</button>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isStudio }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:22px;">
+      <div ref="{{ stageRef }}" style="{{ stageStyle }}">
+      <div style="{{ shellStyle }}">
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line);flex:0 0 auto;">
+            <button onClick="{{ go.console }}" style="width:32px;height:32px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:15px;cursor:pointer;line-height:1;color:var(--ink);">‹</button>
+            <div style="font-size:15px;font-weight:750;">{{ t.aiTitle }}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);white-space:nowrap;">affiche-concert.jpg · 2480 × 3508 px · 180 dpi</div>
+          </div>
+          <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;background:#EDF0F1;padding:26px;">
+            <div style="position:relative;width:520px;height:660px;background:#fff;box-shadow:0 12px 34px rgba(16,26,32,.18);overflow:hidden;">
+              <div style="position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,#E4EAEC 0 10px,#F4F7F8 10px 20px);"></div>
+              <div style="position:absolute;inset:0;overflow:hidden;width:{{ splitPct }};">
+                <div style="position:absolute;top:0;left:0;width:520px;height:660px;background-image:repeating-linear-gradient(135deg,#C9D4D8 0 3px,#EDF1F2 3px 6px);filter:blur(1.2px);"></div>
+                <div style="position:absolute;left:18px;top:18px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;background:rgba(15,26,32,.82);color:#fff;padding:5px 9px;border-radius:6px;">ORIGINAL</div>
+              </div>
+              <div style="position:absolute;right:18px;top:18px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;background:var(--a);color:#fff;padding:5px 9px;border-radius:6px;">{{ t.aiAfter }}</div>
+              <div style="position:absolute;top:0;bottom:0;width:2px;background:#fff;box-shadow:0 0 0 1px rgba(15,26,32,.25);left:{{ splitPct }};"></div>
+            </div>
+          </div>
+          <div style="flex:0 0 auto;padding:14px 26px;border-top:1px solid var(--line);background:#fff;display:flex;align-items:center;gap:16px;">
+            <div style="font-size:12.5px;font-weight:650;color:var(--ink-2);white-space:nowrap;">{{ t.aiCompare }}</div>
+            <input type="range" min="0" max="100" value="{{ split }}" onChange="{{ setSplit }}" style="flex:1;accent-color:var(--a);">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-3);width:44px;text-align:right;">{{ splitPct }}</div>
+          </div>
+        </div>
+
+        <div style="width:352px;flex:0 0 352px;border-left:1px solid var(--line);background:#FBFCFC;display:flex;flex-direction:column;">
+          <div style="flex:1;min-height:0;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:14px;">
+            <div style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;">
+              <div style="font-size:13.5px;font-weight:700;margin-bottom:6px;">{{ t.aiWhy }}</div>
+              <div style="font-size:12.5px;line-height:1.55;color:var(--ink-2);">{{ t.aiWhyD }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">{{ t.aiOps }}</div>
+              <sc-for list="{{ aiOps }}" as="op" hint-placeholder-count="8">
+                <button onClick="{{ op.toggle }}" style="{{ op.style }}">
+                  <span style="display:block;flex:1;min-width:0;font-size:13px;font-weight:650;line-height:1.35;">{{ op.label }}</span>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3);flex:0 0 auto;">{{ op.cost }}</span>
+                </button>
+              </sc-for>
+            </div>
+            <div style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;"><span style="color:var(--ink-3);">{{ t.aiResult }}</span><span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-weight:600;">{{ aiResult }}</span></div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;"><span style="color:var(--ink-3);">{{ t.aiTime }}</span><span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-weight:600;">{{ aiTime }}</span></div>
+            </div>
+            <div style="display:flex;gap:9px;padding:12px;border-radius:11px;background:var(--w-soft);">
+              <span style="width:7px;height:7px;border-radius:50%;background:var(--w);margin-top:5px;flex:0 0 7px;"></span>
+              <div style="font-size:12px;line-height:1.55;color:#6B4A05;">{{ t.aiWarn }}</div>
+            </div>
+          </div>
+          <div style="flex:0 0 auto;padding:14px;border-top:1px solid var(--line);background:#fff;display:flex;flex-direction:column;gap:8px;">
+            <button onClick="{{ go.console }}" style="height:44px;border-radius:11px;border:none;background:var(--a);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;" style-hover="background:var(--a-dark);">{{ t.aiApply }}</button>
+            <button onClick="{{ go.console }}" style="height:40px;border-radius:11px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:650;color:var(--ink);cursor:pointer;" style-hover="background:#F3F6F6;">{{ t.aiKeep }}</button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isQr }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:22px;">
+      <div ref="{{ stageRef }}" style="{{ stageStyle }}">
+      <div style="{{ qrShellStyle }}">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:40px;height:40px;border-radius:11px;background:var(--a);display:flex;align-items:center;justify-content:center;">
+            <div style="width:14px;height:14px;border:2.5px solid #fff;border-radius:3px;"></div>
+          </div>
+          <div style="font-size:22px;font-weight:800;letter-spacing:-.02em;">Imprimerie Vallée</div>
+        </div>
+        <h2 style="margin:38px 0 10px;font-size:52px;line-height:1.05;letter-spacing:-.03em;font-weight:800;text-align:center;max-width:20ch;">{{ t.qrTitle }}</h2>
+        <div style="font-size:19px;color:var(--ink-2);">{{ t.qrSub }}</div>
+        <div style="margin:34px 0 0;padding:26px;background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 18px 44px rgba(16,26,32,.10);">
+          <div style="display:grid;grid-template-columns:repeat(25,10px);grid-auto-rows:10px;">
+            <sc-for list="{{ qrCells }}" as="c" hint-placeholder-count="25">
+              <div style="background:{{ c.bg }};"></div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="margin-top:22px;font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--ink-2);letter-spacing:.02em;">imprimerie-vallee.fr/envoi</div>
+        <div style="margin-top:auto;display:flex;align-items:center;gap:10px;padding:14px 20px;border-radius:12px;background:#fff;border:1px solid var(--line);">
+          <span style="width:9px;height:9px;border-radius:50%;background:#15803D;flex:0 0 9px;"></span>
+          <div style="font-size:14.5px;color:var(--ink-2);">{{ t.qrFooter }}</div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isConsole }}" hint-placeholder-val="{{ false }}">
+    <div style="padding:22px;">
+      <div ref="{{ stageRef }}" style="{{ stageStyle }}">
+      <div style="{{ shellStyle }}">
+
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line);flex:0 0 auto;">
+            <button onClick="{{ go.dash }}" style="width:32px;height:32px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:15px;cursor:pointer;line-height:1;color:var(--ink);">‹</button>
+            <div style="min-width:0;">
+              <div style="font-size:14.5px;font-weight:700;white-space:nowrap;">devis-2026-vallee.pdf</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-3);white-space:nowrap;">PDF · 3 p. · 2,4 Mo · {{ t.recv }} 14:31</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:7px;padding:5px 11px;border-radius:8px;background:#FEF2F2;color:#B91C1C;font-size:11.5px;font-weight:600;white-space:nowrap;">
+              <span style="width:7px;height:7px;border-radius:50%;background:#B91C1C;animation:dcPulse 2s infinite;flex:0 0 7px;"></span>{{ t.ttl }} 19 min
+            </div>
+            <div style="margin-left:auto;display:flex;gap:4px;padding:3px;background:#EEF1F2;border-radius:10px;flex:0 0 auto;">
+              <button onClick="{{ setFast }}" style="{{ tab.fast }}">{{ t.modeFast }}</button>
+              <button onClick="{{ setPro }}" style="{{ tab.pro }}">{{ t.modePro }}</button>
+            </div>
+          </div>
+
+          <div style="flex:1;min-height:0;display:flex;">
+
+            <div style="width:140px;flex:0 0 140px;border-right:1px solid var(--line);background:#FBFCFC;display:flex;flex-direction:column;">
+              <div style="padding:12px 12px 8px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">{{ t.pages }}</div>
+              <div style="padding:0 12px 12px;display:flex;flex-direction:column;gap:10px;overflow:auto;">
+                <sc-for list="{{ thumbs }}" as="p" hint-placeholder-count="3">
+                  <button onClick="{{ p.pick }}" style="{{ p.style }}">
+                    <div style="width:100%;aspect-ratio:1/1.414;border-radius:4px;background-image:repeating-linear-gradient(135deg,#F1F4F5 0 6px,#FFFFFF 6px 12px);border:1px solid var(--line);"></div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-3);">{{ p.n }}</div>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;background:#EDF0F1;">
+              <div style="display:flex;align-items:center;gap:6px;padding:9px 14px;background:#fff;border-bottom:1px solid var(--line);flex:0 0 auto;">
+                <sc-for list="{{ tools }}" as="tl" hint-placeholder-count="6">
+                  <button onClick="{{ tl.act }}" style="{{ tl.style }}">{{ tl.label }}</button>
+                </sc-for>
+                <div style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-2);">{{ zoomLabel }}</div>
+              </div>
+              <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:26px;overflow:hidden;">
+                <div style="{{ sheetStyle }}">
+                  <div style="position:absolute;inset:26px;border:1px dashed #C9D4D8;"></div>
+                  <div style="position:absolute;left:34px;right:34px;top:44px;display:flex;flex-direction:column;gap:9px;">
+                    <div style="height:15px;width:52%;background:#DFE5E7;border-radius:3px;"></div>
+                    <div style="height:7px;width:88%;background:#EDF1F2;border-radius:3px;"></div>
+                    <div style="height:7px;width:94%;background:#EDF1F2;border-radius:3px;"></div>
+                    <div style="height:7px;width:72%;background:#EDF1F2;border-radius:3px;"></div>
+                    <div style="height:60px;width:100%;background-image:repeating-linear-gradient(135deg,#F1F4F5 0 6px,#FFFFFF 6px 12px);border:1px solid var(--line);border-radius:4px;margin-top:8px;"></div>
+                    <div style="height:7px;width:82%;background:#EDF1F2;border-radius:3px;margin-top:8px;"></div>
+                    <div style="height:7px;width:64%;background:#EDF1F2;border-radius:3px;"></div>
+                  </div>
+                  <div style="position:absolute;left:0;right:0;bottom:12px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-3);">{{ sheetLabel }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <sc-if value="{{ pjOn }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:0 0 auto;display:flex;align-items:center;gap:16px;padding:12px 18px;border-top:1px solid var(--line);background:{{ pjBg }};animation:dcFadeUp .25s ease both;">
+              <span style="width:9px;height:9px;border-radius:50%;background:{{ pjDot }};flex:0 0 9px;"></span>
+              <div style="display:flex;flex-direction:column;gap:2px;min-width:0;">
+                <div style="font-size:13.5px;font-weight:700;color:var(--ink);">{{ pjTitle }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-2);">{{ pjSub }}</div>
+              </div>
+              <div style="flex:1;height:6px;border-radius:3px;background:rgba(16,26,32,.08);overflow:hidden;">
+                <div style="height:100%;border-radius:3px;background:{{ pjDot }};transition:width .2s linear;width:{{ pjPct }};"></div>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;width:44px;text-align:right;">{{ pjPct }}</div>
+            </div>
+          </sc-if>
+
+          <div style="flex:0 0 auto;display:flex;align-items:center;gap:22px;padding:14px 18px;border-top:1px solid var(--line);background:#fff;">
+            <sc-for list="{{ summary }}" as="sm" hint-placeholder-count="5">
+              <div style="display:flex;flex-direction:column;gap:3px;min-width:0;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);white-space:nowrap;">{{ sm.k }}</div>
+                <div style="font-size:13.5px;font-weight:650;white-space:nowrap;">{{ sm.v }}</div>
+              </div>
+            </sc-for>
+            <div style="margin-left:auto;display:flex;align-items:center;gap:20px;flex:0 0 auto;">
+              <div style="text-align:right;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);">{{ t.price }}</div>
+                <div style="font-size:24px;font-weight:800;letter-spacing:-.03em;">{{ price }}</div>
+              </div>
+              <button onClick="{{ cancelPrint }}" style="height:46px;padding:0 20px;border-radius:11px;border:1px solid var(--line);background:#fff;font-size:14px;font-weight:700;color:var(--ink);cursor:pointer;" style-hover="background:#F3F6F6;">{{ t.cancel }}</button>
+              <button onClick="{{ startPrint }}" style="height:46px;padding:0 34px;border-radius:11px;border:none;background:var(--w);color:#3B2600;font-size:15px;font-weight:800;letter-spacing:.02em;cursor:pointer;box-shadow:0 2px 10px rgba(245,158,11,.35);" style-hover="background:#E08E07;">{{ t.print }}</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="width:352px;flex:0 0 352px;border-left:1px solid var(--line);display:flex;flex-direction:column;background:#FBFCFC;">
+          <div style="display:flex;gap:4px;padding:10px;border-bottom:1px solid var(--line);background:#fff;flex:0 0 auto;">
+            <button onClick="{{ setPanelSet }}" style="{{ tab.pset }}">{{ t.settings }}</button>
+            <button onClick="{{ setPanelPre }}" style="{{ tab.ppre }}">{{ t.preflight }}</button>
+          </div>
+
+          <sc-if value="{{ panelSettings }}" hint-placeholder-val="{{ true }}">
+            <div style="flex:1;min-height:0;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:16px;">
+
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">{{ t.machine }}</div>
+                <sc-for list="{{ machineOpts }}" as="m" hint-placeholder-count="3">
+                  <button onClick="{{ m.pick }}" style="{{ m.style }}">
+                    <span style="width:8px;height:8px;border-radius:50%;background:{{ m.dot }};flex:0 0 8px;margin-top:5px;"></span>
+                    <span style="display:block;flex:1;min-width:0;">
+                      <span style="display:block;font-size:13px;font-weight:700;line-height:1.35;">{{ m.name }}</span>
+                      <span style="display:block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-3);line-height:1.5;">{{ m.spec }}</span>
+                    </span>
+                    <span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:600;color:{{ m.dot }};flex:0 0 auto;margin-top:3px;">{{ m.state }}</span>
+                  </button>
+                </sc-for>
+              </div>
+
+              <sc-if value="{{ isLarge }}" hint-placeholder-val="{{ false }}">
+                <div style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px;">
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <div style="font-size:13.5px;font-weight:700;">{{ t.lfTitle }}</div>
+                    <div style="margin-left:auto;display:flex;gap:3px;padding:3px;background:#EEF1F2;border-radius:8px;">
+                      <sc-for list="{{ lfUnits }}" as="u" hint-placeholder-count="3">
+                        <button onClick="{{ u.pick }}" style="{{ u.style }}">{{ u.label }}</button>
+                      </sc-for>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <input type="number" value="{{ lfW }}" onChange="{{ setLfW }}" style="flex:1;min-width:0;height:38px;padding:0 11px;border-radius:9px;border:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--ink);background:#fff;">
+                    <div style="color:var(--ink-3);font-size:13px;">×</div>
+                    <input type="number" value="{{ lfH }}" onChange="{{ setLfH }}" style="flex:1;min-width:0;height:38px;padding:0 11px;border-radius:9px;border:1px solid var(--line);font-family:'IBM Plex Mono',monospace;font-size:13.5px;color:var(--ink);background:#fff;">
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-3);width:22px;">{{ lfUnit }}</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;background:var(--a-soft);">
+                    <div style="font-size:12.5px;color:#0A4A5C;">{{ t.lfSurface }}</div>
+                    <div style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:var(--a);">{{ lfArea }}</div>
+                  </div>
+                </div>
+              </sc-if>
+
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 13px;background:#fff;border:1px solid var(--line);border-radius:12px;">
+                <div style="font-size:13px;font-weight:650;">{{ t.copies }}</div>
+                <div style="margin-left:auto;display:flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:10px;padding:3px;">
+                  <button onClick="{{ decJob }}" style="width:32px;height:30px;border:none;background:#fff;border-radius:8px;font-size:16px;cursor:pointer;color:var(--ink);">−</button>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;width:36px;text-align:center;">{{ jobCopies }}</div>
+                  <button onClick="{{ incJob }}" style="width:32px;height:30px;border:none;background:#fff;border-radius:8px;font-size:16px;cursor:pointer;color:var(--ink);">+</button>
+                </div>
+              </div>
+
+              <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div style="display:flex;align-items:baseline;gap:8px;">
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">{{ g.label }}</div>
+                    <div style="margin-left:auto;font-size:11.5px;color:var(--ink-3);">{{ g.hint }}</div>
+                  </div>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                    <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="4">
+                      <button onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ panelPreflight }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1;min-height:0;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:14px;">
+              <div style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px;">
+                <div style="font-size:14px;font-weight:700;">{{ t.preflightTitle }}</div>
+                <div style="font-size:12.5px;line-height:1.55;color:var(--ink-2);">{{ t.preflightLead }}</div>
+              </div>
+              <div style="background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;">
+                <sc-for list="{{ checks }}" as="c" hint-placeholder-count="8">
+                  <div style="display:flex;align-items:flex-start;gap:10px;padding:11px 13px;border-top:1px solid var(--line);">
+                    <span style="width:8px;height:8px;border-radius:50%;background:{{ c.color }};flex:0 0 8px;margin-top:5px;"></span>
+                    <div style="flex:1;min-width:0;">
+                      <div style="font-size:12.5px;font-weight:650;line-height:1.4;">{{ c.label }}</div>
+                      <div style="font-size:11.5px;color:var(--ink-3);line-height:1.5;">{{ c.note }}</div>
+                    </div>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;color:{{ c.color }};flex:0 0 auto;margin-top:2px;">{{ c.value }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;">
+                <div style="font-size:13.5px;font-weight:700;">{{ t.qualityByFormat }}</div>
+                <sc-for list="{{ qualityScale }}" as="q" hint-placeholder-count="5">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;width:26px;color:var(--ink-2);">{{ q.fmt }}</div>
+                    <div style="flex:1;height:6px;border-radius:3px;background:#F0F3F4;overflow:hidden;">
+                      <div style="height:100%;border-radius:3px;background:{{ q.color }};width:{{ q.w }};"></div>
+                    </div>
+                    <div style="font-size:11.5px;color:{{ q.color }};font-weight:600;width:82px;text-align:right;">{{ q.label }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <button onClick="{{ go.studio }}" style="height:44px;border-radius:11px;border:1px solid var(--a);background:var(--a-soft);color:var(--a);font-size:13.5px;font-weight:700;cursor:pointer;flex:0 0 auto;" style-hover="background:#D9EBF0;">{{ t.openAI }}</button>
+            </div>
+          </sc-if>
+        </div>
+
+      </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ true }}">
+    <div style="padding:40px 24px 70px;display:flex;justify-content:center;gap:48px;flex-wrap:wrap;align-items:flex-start;">
+
+      <div style="width:390px;flex:0 0 390px;border-radius:44px;border:10px solid #10181C;background:#10181C;box-shadow:0 26px 60px rgba(16,26,32,.24);overflow:hidden;">
+        <div style="position:relative;height:780px;background:#fff;border-radius:34px;overflow:hidden;display:flex;flex-direction:column;">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 22px 6px;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink);">
+            <span>9:41</span><span>5G · 82%</span>
+          </div>
+
+          <sc-if value="{{ mStep0 }}" hint-placeholder-val="{{ true }}">
+            <div style="flex:1;display:flex;flex-direction:column;padding:26px 24px 24px;animation:dcFadeUp .3s ease both;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div style="width:34px;height:34px;border-radius:9px;background:var(--a);display:flex;align-items:center;justify-content:center;">
+                  <div style="width:12px;height:12px;border:2px solid #fff;border-radius:2px;"></div>
+                </div>
+                <div>
+                  <div style="font-weight:800;font-size:15px;line-height:1.1;">Imprimerie Vallée</div>
+                  <div style="font-size:11.5px;color:var(--ink-3);">Lyon 3e</div>
+                </div>
+              </div>
+              <div style="margin-top:44px;">
+                <h2 style="margin:0 0 10px;font-size:29px;line-height:1.15;letter-spacing:-.025em;font-weight:800;">{{ t.mTitle }}</h2>
+                <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">{{ t.mLead }}</p>
+              </div>
+              <div style="margin-top:36px;display:flex;flex-direction:column;gap:12px;">
+                <button onClick="{{ pickFile }}" style="height:58px;border-radius:14px;border:none;background:var(--a);color:#fff;font-size:15.5px;font-weight:700;letter-spacing:.01em;cursor:pointer;" style-hover="background:var(--a-dark);">{{ t.mPick }}</button>
+                <button onClick="{{ pickFile }}" style="height:58px;border-radius:14px;border:1.5px solid var(--line);background:#fff;color:var(--ink);font-size:15.5px;font-weight:700;cursor:pointer;" style-hover="background:#F3F6F6;">{{ t.mPhoto }}</button>
+              </div>
+              <div style="margin-top:auto;display:flex;gap:10px;align-items:flex-start;padding:14px;border-radius:12px;background:#F5F7F7;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#15803D;margin-top:5px;flex:0 0 8px;"></span>
+                <div style="font-size:12.5px;line-height:1.55;color:var(--ink-2);">{{ t.mPrivacy }}</div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ mStep1 }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1;display:flex;flex-direction:column;padding:18px 24px 22px;overflow:auto;animation:dcFadeUp .3s ease both;">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+                <button onClick="{{ back }}" style="width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:#fff;font-size:15px;cursor:pointer;line-height:1;">‹</button>
+                <div style="font-size:15px;font-weight:700;">{{ t.mReview }}</div>
+              </div>
+              <div style="display:flex;gap:14px;padding:14px;border:1px solid var(--line);border-radius:14px;">
+                <div style="width:62px;flex:0 0 62px;height:84px;border:1px solid var(--line);border-radius:6px;background-image:repeating-linear-gradient(135deg,#F1F4F5 0 6px,#FFFFFF 6px 12px);"></div>
+                <div style="display:flex;flex-direction:column;gap:5px;min-width:0;">
+                  <div style="font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">devis-2026-vallee.pdf</div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-3);line-height:1.6;">PDF · 3 pages<br>2,4 Mo · A4 portrait</div>
+                </div>
+              </div>
+
+              <div style="margin-top:22px;display:flex;flex-direction:column;gap:14px;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);">{{ t.mOptional }}</div>
+                <div>
+                  <div style="font-size:12.5px;font-weight:600;margin-bottom:7px;color:var(--ink-2);">{{ t.mFormat }}</div>
+                  <div style="display:flex;gap:7px;flex-wrap:wrap;">
+                    <sc-for list="{{ formats }}" as="f" hint-placeholder-count="5">
+                      <button onClick="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:12.5px;font-weight:600;margin-bottom:7px;color:var(--ink-2);">{{ t.mColor }}</div>
+                  <div style="display:flex;gap:7px;">
+                    <sc-for list="{{ colorModes }}" as="c" hint-placeholder-count="2">
+                      <button onClick="{{ c.pick }}" style="{{ c.style }}">{{ c.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <div style="font-size:12.5px;font-weight:600;color:var(--ink-2);">{{ t.mCopies }}</div>
+                  <div style="margin-left:auto;display:flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:10px;padding:3px;">
+                    <button onClick="{{ dec }}" style="width:34px;height:32px;border:none;background:#fff;border-radius:8px;font-size:16px;cursor:pointer;color:var(--ink);">−</button>
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;width:34px;text-align:center;">{{ copies }}</div>
+                    <button onClick="{{ inc }}" style="width:34px;height:32px;border:none;background:#fff;border-radius:8px;font-size:16px;cursor:pointer;color:var(--ink);">+</button>
+                  </div>
+                </div>
+                <div style="display:flex;gap:9px;padding:12px;border-radius:11px;background:var(--w-soft);">
+                  <span style="width:7px;height:7px;border-radius:50%;background:var(--w);margin-top:5px;flex:0 0 7px;"></span>
+                  <div style="font-size:12px;line-height:1.55;color:#6B4A05;">{{ t.mConfirmNote }}</div>
+                </div>
+              </div>
+
+              <button onClick="{{ send }}" style="margin-top:22px;height:58px;border-radius:14px;border:none;background:var(--a);color:#fff;font-size:15.5px;font-weight:700;cursor:pointer;flex:0 0 58px;" style-hover="background:var(--a-dark);">{{ t.mSend }}</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ mStep2 }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:30px 30px 60px;text-align:center;animation:dcFadeUp .3s ease both;">
+              <div style="margin:0 auto 26px;width:78px;height:78px;border-radius:20px;background:var(--a-soft);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;">
+                <div style="width:26px;height:26px;border:2.5px solid var(--a);border-radius:5px;"></div>
+                <div style="position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.8),transparent);animation:dcSweep 1.4s linear infinite;"></div>
+              </div>
+              <div style="font-size:19px;font-weight:700;margin-bottom:8px;">{{ t.mSending }}</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink-3);margin-bottom:22px;">devis-2026-vallee.pdf · 2,4 Mo</div>
+              <div style="height:8px;border-radius:4px;background:#EEF1F2;overflow:hidden;">
+                <div style="height:100%;background:var(--a);border-radius:4px;transition:width .25s linear;width:{{ progress }};"></div>
+              </div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-2);margin-top:10px;">{{ progress }}</div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ mStep3 }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1;display:flex;flex-direction:column;padding:30px 26px 26px;animation:dcFadeUp .3s ease both;">
+              <div style="margin:34px auto 26px;width:82px;height:82px;border-radius:50%;background:#EAF6EF;display:flex;align-items:center;justify-content:center;">
+                <div style="width:26px;height:14px;border-left:3px solid #15803D;border-bottom:3px solid #15803D;transform:rotate(-45deg);margin-top:-6px;"></div>
+              </div>
+              <div style="text-align:center;">
+                <div style="font-size:23px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px;">{{ t.mDone }}</div>
+                <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2);">{{ t.mDoneLead }}</p>
+              </div>
+              <div style="margin-top:26px;border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px;">{{ t.mRef }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:34px;font-weight:600;letter-spacing:-.01em;color:var(--a);">#0248</div>
+              </div>
+              <div style="margin-top:14px;display:flex;gap:10px;padding:14px;border-radius:12px;background:#F5F7F7;">
+                <span style="width:8px;height:8px;border-radius:50%;background:#15803D;margin-top:5px;flex:0 0 8px;"></span>
+                <div style="font-size:12.5px;line-height:1.55;color:var(--ink-2);">{{ t.mAutoDelete }}</div>
+              </div>
+              <button onClick="{{ reset }}" style="margin-top:auto;height:52px;border-radius:14px;border:1px solid var(--line);background:#fff;font-size:14.5px;font-weight:700;color:var(--ink);cursor:pointer;" style-hover="background:#F3F6F6;">{{ t.mAgain }}</button>
+            </div>
+          </sc-if>
+
+        </div>
+      </div>
+
+      <div style="width:100%;max-width:420px;display:flex;flex-direction:column;gap:14px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--a);">{{ t.flowKicker }}</div>
+        <h2 style="margin:0;font-size:28px;line-height:1.15;letter-spacing:-.025em;font-weight:800;">{{ t.flowTitle }}</h2>
+        <p style="margin:0;font-size:14.5px;line-height:1.65;color:var(--ink-2);text-wrap:pretty;">{{ t.flowLead }}</p>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+            <button onClick="{{ s.go }}" style="{{ s.style }}">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;opacity:.6;line-height:1.45;flex:0 0 auto;">{{ s.n }}</span>
+              <span style="display:block;flex:1;min-width:0;font-weight:650;font-size:13.5px;line-height:1.45;">{{ s.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+
+    </div>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;fr&quot;,&quot;en&quot;],&quot;default&quot;:&quot;fr&quot;,&quot;tsType&quot;:&quot;'fr' | 'en'&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;#0E7490&quot;,&quot;#1F4FD8&quot;,&quot;#0B5B4E&quot;,&quot;#3B2FB5&quot;],&quot;default&quot;:&quot;#0E7490&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;warm&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;#F59E0B&quot;,&quot;#E8612C&quot;,&quot;#D64550&quot;],&quot;default&quot;:&quot;#F59E0B&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const FR = {
+  navArchi:"Architecture UX", navDash:"Tableau de bord", navConsole:"Console d'impression", navMobile:"Client mobile",
+  recv:"reçu à", modeFast:"Mode rapide", modePro:"Mode professionnel", pages:"Pages",
+  settings:"Réglages", preflight:"Préflight", machine:"Machine", copies:"Exemplaires",
+  price:"Prix estimé", cancel:"ANNULER", print:"IMPRIMER",
+  preflightTitle:"Contrôle avant impression", preflightLead:"Analyse automatique du fichier à la réception. Deux points demandent votre attention.",
+  qualityByFormat:"Qualité recommandée par format", openAI:"Ouvrir le Studio IA",
+  gFormat:"Format", gOrient:"Orientation", gColor:"Couleur", gDuplex:"Impression", gScale:"Échelle",
+  gMedia:"Papier / support", gQuality:"Qualité", gDpi:"Résolution", gFinish:"Finitions",
+  hintCompat:"compatible machine", hintMulti:"choix multiple",
+  navQr:"Écran QR", qrTitle:"Scannez pour envoyer votre document", qrSub:"Aucune application nécessaire.",
+  qrFooter:"Vos fichiers sont supprimés automatiquement après impression.",
+  mSettings:"Réglages", mTest:"Page de test",
+  pItem:"Prestation", pUnit:"Unité", pPrice:"Prix", pMargin:"Marge",
+  emptyLead:"Cette section fait partie du périmètre mais n'est pas encore maquettée. Dites-moi si vous voulez que je la conçoive.",
+  backDash:"Retour au tableau de bord",
+  aiTitle:"Studio IA", aiAfter:"VERSION AMÉLIORÉE", aiCompare:"Comparer",
+  aiWhy:"Pourquoi ce fichier ?", aiWhyD:"180 dpi à l'échelle A2 : la netteté se dégrade à l'impression. Un upscale ×2 ramène le fichier à 360 dpi.",
+  aiOps:"Traitements", aiResult:"Résultat estimé", aiTime:"Durée", aiWarn:"Le traitement modifie le fichier du client. Il reste supprimé automatiquement après impression.",
+  aiApply:"APPLIQUER ET REVENIR", aiKeep:"Conserver l'original",
+  navDs:"Design system", lfTitle:"Dimensions libres", lfSurface:"Surface",
+  dsStates:"États vides et erreurs",
+  hRef:"Réf.", hFile:"Fichier", hSpec:"Impression", hMachine:"Machine", hPrice:"Prix", hFile2:"Confidentialité",
+  dsLead:"Une base restreinte : deux familles typographiques, une couleur porteuse, une couleur d'action, trois couleurs d'état. Tout le reste est du gris et de l'espace.",
+  archiKicker:"Architecture", archiTitle:"Du QR code au document imprimé, en quatre temps",
+  archiLead:"Le client scanne, envoie, repart. L'imprimeur reçoit, prépare, imprime. Le fichier disparaît. Deux surfaces distinctes, une seule file de travaux partagée.",
+  step1:"Scan", step1d:"Écran QR plein écran au comptoir. Aucune application, aucun compte.",
+  step2:"Envoi", step2d:"Le client choisit un fichier ou prend une photo. Préférences facultatives.",
+  step3:"Préparation", step3d:"Le fichier apparaît sur le poste. Préflight automatique, console d'impression.",
+  step4:"Suppression", step4d:"Après impression, suppression sécurisée. Purge automatique après 20 min.",
+  trackClient:"Parcours client — smartphone", trackShop:"Parcours imprimeur — poste PC",
+  priv:"La confidentialité est un état visible, pas une promesse",
+  privD:"Chaque document affiche son compte à rebours de suppression. Après impression, la purge est confirmée à l'écran.",
+  privA:"chiffré en transit", privB:"purge 20 min", privC:"aucun compte requis",
+  grpWork:"Travail", grpShop:"Atelier",
+  mDash:"Tableau de bord", mJobs:"Impressions", mFiles:"Nouveaux fichiers", mMach:"Machines",
+  mMedia:"Supports", mPrice:"Tarifs", mHist:"Historique", mSet:"Paramètres",
+  agentOk:"Connecté · 4 machines détectées", today:"Mardi 22 septembre · 14:32",
+  qrScreen:"Afficher l'écran QR", role:"Opératrice · Poste 02",
+  newJobs:"Nouveaux travaux", live:"Réception en direct",
+  prepare:"Préparer", preview:"Aperçu",
+  chart:"Impressions par heure", chartUnit:"pages",
+  queue:"File d'attente", machines:"Machines",
+  mTitle:"Envoyez votre document", mLead:"Il s'imprime au comptoir. Aucune application à installer.",
+  mPick:"CHOISIR UN FICHIER", mPhoto:"PRENDRE UNE PHOTO",
+  mPrivacy:"Votre fichier est supprimé automatiquement après impression.",
+  mReview:"Votre document", mOptional:"Préférences facultatives",
+  mFormat:"Format", mColor:"Couleur", mCopies:"Exemplaires",
+  mConfirmNote:"Les options seront confirmées par l'imprimeur au comptoir.",
+  mSend:"ENVOYER POUR IMPRESSION", mSending:"Envoi en cours",
+  mDone:"Document envoyé", mDoneLead:"Votre document est disponible au comptoir.",
+  mRef:"Référence", mAutoDelete:"Suppression automatique après impression, ou dans 20 minutes.",
+  mAgain:"Envoyer un autre document",
+  flowKicker:"Parcours client", flowTitle:"Quatre écrans, rien de plus",
+  flowLead:"Le client n'a ni compte ni application. Chaque écran pose une seule question. Cliquez une étape pour la voir.",
+  s1:"Accueil", s2:"Document et préférences", s3:"Envoi", s4:"Confirmation",
+  kpi1:"Impressions aujourd'hui", kpi2:"Documents en attente", kpi3:"Machines actives",
+  kpi4:"Chiffre d'affaires", kpi5:"Volume imprimé", kpi6:"Travaux terminés",
+  qWait:"En attente", qPrep:"Préparation", qReady:"Prêt", qPrint:"Impression", qDone:"Terminé",
+  stNew:"NOUVEAU", stPrep:"PRÉPARÉ", stCheck:"À VÉRIFIER",
+  ttl:"Suppression dans"
+};
+const EN = {
+  navArchi:"UX architecture", navDash:"Dashboard", navConsole:"Print console", navMobile:"Mobile client",
+  recv:"received", modeFast:"Quick mode", modePro:"Pro mode", pages:"Pages",
+  settings:"Settings", preflight:"Preflight", machine:"Machine", copies:"Copies",
+  price:"Estimated price", cancel:"CANCEL", print:"PRINT",
+  preflightTitle:"Preflight check", preflightLead:"Automatic analysis on intake. Two items need your attention.",
+  qualityByFormat:"Recommended quality per size", openAI:"Open AI Studio",
+  gFormat:"Size", gOrient:"Orientation", gColor:"Colour", gDuplex:"Sides", gScale:"Scale",
+  gMedia:"Paper / media", gQuality:"Quality", gDpi:"Resolution", gFinish:"Finishing",
+  hintCompat:"machine compatible", hintMulti:"multi-select",
+  navQr:"QR screen", qrTitle:"Scan to send your document", qrSub:"No app required.",
+  qrFooter:"Your files are deleted automatically after printing.",
+  mSettings:"Settings", mTest:"Test page",
+  pItem:"Service", pUnit:"Unit", pPrice:"Price", pMargin:"Margin",
+  emptyLead:"This section is in scope but not designed yet. Tell me if you want it built.",
+  backDash:"Back to dashboard",
+  aiTitle:"AI Studio", aiAfter:"ENHANCED", aiCompare:"Compare",
+  aiWhy:"Why this file?", aiWhyD:"180 dpi at A2 size: sharpness degrades in print. A ×2 upscale brings the file back to 360 dpi.",
+  aiOps:"Operations", aiResult:"Estimated result", aiTime:"Duration", aiWarn:"Processing alters the customer's file. It is still deleted automatically after printing.",
+  aiApply:"APPLY AND RETURN", aiKeep:"Keep the original",
+  navDs:"Design system", lfTitle:"Custom dimensions", lfSurface:"Surface",
+  dsStates:"Empty states and errors",
+  hRef:"Ref.", hFile:"File", hSpec:"Print", hMachine:"Machine", hPrice:"Price", hFile2:"Privacy",
+  dsLead:"A deliberately small base: two type families, one carrying colour, one action colour, three state colours. Everything else is grey and space.",
+  archiKicker:"Architecture", archiTitle:"From QR code to printed document, in four moves",
+  archiLead:"The customer scans, sends, leaves. The operator receives, prepares, prints. The file disappears. Two distinct surfaces, one shared job queue.",
+  step1:"Scan", step1d:"Full-screen QR display at the counter. No app, no account.",
+  step2:"Send", step2d:"The customer picks a file or takes a photo. Preferences optional.",
+  step3:"Prepare", step3d:"The file lands on the workstation. Automatic preflight, print console.",
+  step4:"Delete", step4d:"After printing, secure wipe. Automatic purge after 20 min.",
+  trackClient:"Customer journey — smartphone", trackShop:"Operator journey — desktop",
+  priv:"Privacy as a visible state, not a promise",
+  privD:"Every document shows its deletion countdown. After printing, the wipe is confirmed on screen.",
+  privA:"encrypted in transit", privB:"20 min purge", privC:"no account needed",
+  grpWork:"Work", grpShop:"Shop floor",
+  mDash:"Dashboard", mJobs:"Print jobs", mFiles:"Incoming files", mMach:"Machines",
+  mMedia:"Media", mPrice:"Pricing", mHist:"History", mSet:"Settings",
+  agentOk:"Connected · 4 machines detected", today:"Tuesday 22 September · 14:32",
+  qrScreen:"Show QR screen", role:"Operator · Station 02",
+  newJobs:"Incoming jobs", live:"Live intake",
+  prepare:"Prepare", preview:"Preview",
+  chart:"Prints per hour", chartUnit:"pages",
+  queue:"Queue", machines:"Machines",
+  mTitle:"Send your document", mLead:"It prints at the counter. Nothing to install.",
+  mPick:"CHOOSE A FILE", mPhoto:"TAKE A PHOTO",
+  mPrivacy:"Your file is deleted automatically after printing.",
+  mReview:"Your document", mOptional:"Optional preferences",
+  mFormat:"Size", mColor:"Colour", mCopies:"Copies",
+  mConfirmNote:"Options will be confirmed by the operator at the counter.",
+  mSend:"SEND FOR PRINTING", mSending:"Sending",
+  mDone:"Document sent", mDoneLead:"Your document is waiting at the counter.",
+  mRef:"Reference", mAutoDelete:"Deleted automatically after printing, or within 20 minutes.",
+  mAgain:"Send another document",
+  flowKicker:"Customer journey", flowTitle:"Four screens, nothing more",
+  flowLead:"No account, no app. Each screen asks one question. Click a step to see it.",
+  s1:"Home", s2:"Document and preferences", s3:"Upload", s4:"Confirmation",
+  kpi1:"Prints today", kpi2:"Documents waiting", kpi3:"Machines active",
+  kpi4:"Revenue", kpi5:"Volume printed", kpi6:"Jobs completed",
+  qWait:"Waiting", qPrep:"Preparing", qReady:"Ready", qPrint:"Printing", qDone:"Done",
+  stNew:"NEW", stPrep:"PREPARED", stCheck:"CHECK",
+  ttl:"Deletes in"
+};
+
+class Component extends DCLogic {
+  state = { view:"dash", lang:"fr", nav:"dashboard", step:0, copies:1, fmt:"A4", cmode:0, progress:0, removed:[], scale:1, mode:"fast", panel:"set", page:0, zoom:100, machine:0, jobCopies:1,
+    split:50, ai:["up2"], lfW:200, lfH:100, lfUnit:"cm",
+    sel:{ format:2, orient:0, color:0, duplex:0, jscale:0, media:0, quality:1, dpi:1 }, finish:[] };
+
+  toast(msg, kind){
+    clearTimeout(this._tt);
+    this.setState({ toastMsg:msg, toastKind:kind, toastKey:(this.state.toastKey||0)+1 });
+    this._tt = setTimeout(() => this.setState({ toastMsg:null }), 3200);
+  }
+  startPrint = () => {
+    if(this.state.pj === 1 || this.state.pj === 2) return;
+    clearInterval(this._piv); clearTimeout(this._pto);
+    this.setState({ pj:1, pjP:0 });
+    this._piv = setInterval(() => {
+      const p = Math.min(100, (this.state.pjP||0) + 4);
+      this.setState({ pjP:p });
+      if(p >= 100){
+        clearInterval(this._piv);
+        this.setState({ pj:2, pjP:0 });
+        this._piv = setInterval(() => {
+          const q = Math.min(100, (this.state.pjP||0) + 10);
+          this.setState({ pjP:q });
+          if(q >= 100){ clearInterval(this._piv); this.setState({ pj:3 }); this._pto = setTimeout(() => this.setState({ pj:0 }), 4000); }
+        }, 90);
+      }
+    }, 90);
+  };
+  cancelPrint = () => { clearInterval(this._piv); clearTimeout(this._pto); this.setState({ pj:0, pjP:0 }); };
+  simulateArrival = () => {
+    const en = this.state.lang === "en";
+    this.setState({ arrived:true, removed:this.state.removed.filter(k => k!=="n") });
+    this.toast(en ? "New file received — carte-invitation.pdf" : "Nouveau fichier reçu — carte-invitation.pdf", "new");
+  };
+  componentDidMount(){
+    this._arr = setTimeout(() => { if(!this.state.arrived) this.simulateArrival(); }, 4000);
+    this.syncTheme();
+    if(this.props.lang) this.setState({lang:this.props.lang});
+    this._measure = () => {
+      const el = this._stage;
+      if(!el) return;
+      const w = (el.parentElement ? el.parentElement.clientWidth - 44 : el.clientWidth) || 1440;
+      const hAvail = Math.max(480, window.innerHeight - 100);
+      const k = Math.min(1, w / 1440, hAvail / 936);
+      if(Math.abs(k - this.state.scale) > 0.002) this.setState({scale:k});
+    };
+    this._ro = new ResizeObserver(this._measure);
+    window.addEventListener("resize", this._measure);
+    this._measure();
+  }
+  componentDidUpdate(){ this.syncTheme(); if(this._stage && this._ro){ this._ro.disconnect(); this._ro.observe(this._stage); this._measure(); } }
+  componentWillUnmount(){ clearInterval(this._iv); if(this._ro) this._ro.disconnect(); window.removeEventListener("resize", this._measure); }
+
+  syncTheme(){
+    const r = document.documentElement.style;
+    if(this.props.accent) r.setProperty("--a", this.props.accent);
+    if(this.props.warm) r.setProperty("--w", this.props.warm);
+  }
+
+  tabStyle(on){
+    return "white-space:nowrap;flex:0 0 auto;min-height:30px;padding:5px 13px;border:none;border-radius:8px;cursor:pointer;font-size:12.5px;font-weight:650;display:inline-flex;align-items:center;justify-content:center;line-height:1.2;white-space:nowrap;"+
+      (on ? "background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(16,26,32,.12);" : "background:transparent;color:var(--ink-3);");
+  }
+  navStyle(on){
+    return "display:flex;align-items:center;gap:10px;width:100%;height:36px;padding:0 10px;border:none;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;text-align:left;"+
+      (on ? "background:var(--a-soft);color:var(--a);" : "background:transparent;color:var(--ink-2);");
+  }
+  chipStyle(on){
+    return "height:36px;padding:0 15px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:650;"+
+      (on ? "border:1.5px solid var(--a);background:var(--a-soft);color:var(--a);" : "border:1.5px solid var(--line);background:#fff;color:var(--ink-2);");
+  }
+
+  send = () => {
+    clearInterval(this._iv);
+    this.setState({ step:2, progress:0 });
+    this._iv = setInterval(() => {
+      const p = Math.min(100, this.state.progress + 7);
+      if(p >= 100){ clearInterval(this._iv); this.setState({progress:100}); setTimeout(()=>this.setState({step:3}), 420); }
+      else this.setState({progress:p});
+    }, 90);
+  };
+
+  renderVals(){
+    const s = this.state, t = s.lang === "en" ? EN : FR;
+    const set = v => () => this.setState(v);
+
+    const jobsAll = [
+      {key:"a", name:"devis-2026-vallee.pdf", type:"PDF", pages:"3 p.", size:"2,4 Mo", format:"A4 portrait", dpi:"300 dpi", time:"14:31", pagesShort:"1/3", status:t.stNew, statusBg:"var(--a-soft)", statusFg:"var(--a)", ttl:t.ttl+" 19 min", ttlColor:"var(--ink-3)"},
+      {key:"b", name:"affiche-concert.jpg", type:"JPG", pages:"1 p.", size:"8,1 Mo", format:"A2 portrait", dpi:"180 dpi", time:"14:28", pagesShort:"1/1", status:t.stCheck, statusBg:"var(--w-soft)", statusFg:"#8A5A04", ttl:t.ttl+" 16 min", ttlColor:"#B45309"},
+      {key:"c", name:"contrat-bail.pdf", type:"PDF", pages:"12 p.", size:"1,1 Mo", format:"A4 portrait", dpi:"300 dpi", time:"14:22", pagesShort:"1/12", status:t.stPrep, statusBg:"#EAF6EF", statusFg:"#15803D", ttl:t.ttl+" 11 min", ttlColor:"var(--ink-3)"},
+      {key:"d", name:"bache-ouverture.pdf", type:"PDF", pages:"1 p.", size:"24,6 Mo", format:"200 × 100 cm", dpi:"150 dpi", time:"14:09", pagesShort:"1/1", status:t.stNew, statusBg:"var(--a-soft)", statusFg:"var(--a)", ttl:t.ttl+" 6 min", ttlColor:"#B91C1C"}
+    ];
+    if(s.arrived) jobsAll.unshift({key:"n", name:"carte-invitation.pdf", type:"PDF", pages:"2 p.", size:"3,2 Mo", format:"A5 portrait", dpi:"300 dpi", time:"14:33", pagesShort:"1/2", status:t.stNew, statusBg:"var(--a-soft)", statusFg:"var(--a)", ttl:t.ttl+" 20 min", ttlColor:"var(--ink-3)"});
+    const jobs = jobsAll.filter(j => !s.removed.includes(j.key)).map(j => ({
+      ...j,
+      prepare: () => this.setState({view:"console", panel:"set"}),
+      remove: () => {
+        this.setState({ removed:[...s.removed, j.key] });
+        this.toast(en ? "Deleting securely — " + j.name : "Suppression sécurisée — " + j.name, "del");
+        clearTimeout(this._tdel);
+        this._tdel = setTimeout(() => this.toast(en ? "File deleted" : "Fichier supprimé", "ok"), 1400);
+      }
+    }));
+
+    const barVals = [42,88,120,64,30,96,150,112,70,38];
+    const barLabels = ["9h","10h","11h","12h","13h","14h","15h","16h","17h","18h"];
+    const bars = barVals.map((v,i) => ({
+      h: Math.round((v/150)*100) + "%",
+      color: i === 5 ? "var(--w)" : "var(--a)",
+      label: barLabels[i]
+    }));
+
+    const q = [
+      {label:t.qWait, n:4, w:"40%", color:"#7C8B94"},
+      {label:t.qPrep, n:2, w:"22%", color:"var(--a)"},
+      {label:t.qReady, n:3, w:"32%", color:"var(--w)"},
+      {label:t.qPrint, n:1, w:"14%", color:"#15803D"},
+      {label:t.qDone, n:9, w:"88%", color:"#C3CDD1"}
+    ];
+
+    const formats = ["A4","A3","A2","A1","A0"].map(f => ({
+      label:f, style:this.chipStyle(s.fmt===f), pick:() => this.setState({fmt:f})
+    }));
+    const colorModes = [s.lang==="en"?"Colour":"Couleur", s.lang==="en"?"Black & white":"Noir et blanc"].map((c,i) => ({
+      label:c, style:this.chipStyle(s.cmode===i), pick:() => this.setState({cmode:i})
+    }));
+
+    const stepLabels = [t.s1,t.s2,t.s3,t.s4];
+    const steps = stepLabels.map((l,i) => ({
+      n:"0"+(i+1), label:l, go:() => (i===2 ? this.send() : this.setState({step:i})),
+      style:"display:flex;align-items:flex-start;gap:12px;width:100%;padding:13px 15px;border-radius:12px;cursor:pointer;text-align:left;"+
+        (s.step===i ? "border:1.5px solid var(--a);background:var(--a-soft);color:var(--a);" : "border:1.5px solid var(--line);background:#fff;color:var(--ink-2);")
+    }));
+
+    const SHELL_H = 936;
+    const en = s.lang === "en";
+    const sel = s.sel;
+    const selSet = (k,v) => () => this.setState({ sel:{...sel, [k]:v} });
+    const chip = on => "height:32px;padding:0 12px;border-radius:9px;cursor:pointer;font-size:12.5px;font-weight:650;white-space:nowrap;"+
+      (on ? "border:1.5px solid var(--a);background:var(--a-soft);color:var(--a);" : "border:1.5px solid var(--line);background:#fff;color:var(--ink-2);");
+    const mkGroup = (label,hint,key,opts) => ({
+      label, hint,
+      options: opts.map((o,i) => ({ label:o, style:chip(sel[key]===i), pick:selSet(key,i) }))
+    });
+
+    const machineList = [
+      {name:"HP LaserJet Pro M480", spec:"A4 / A3 · couleur · recto-verso", state:"ONLINE", dot:"#15803D"},
+      {name:"Canon imagePROGRAF", spec:"A2 / A1 / A0 · grand format", state:"ONLINE", dot:"#15803D"},
+      {name:"Traceur Roland TrueVIS", spec:"bâche · vinyle · sticker", state:"BUSY", dot:"#B45309"}
+    ];
+    const machineOpts = machineList.map((m,i) => ({
+      ...m,
+      pick: () => this.setState({machine:i}),
+      style: "display:flex;align-items:flex-start;gap:10px;width:100%;padding:11px 12px;border-radius:12px;cursor:pointer;text-align:left;"+
+        (s.machine===i ? "border:1.5px solid var(--a);background:var(--a-soft);" : "border:1.5px solid var(--line);background:#fff;")
+    }));
+
+    const fmtList = s.machine===0 ? ["A6","A5","A4","A3"] : (s.machine===1 ? ["A3","A2","A1","A0",en?"Custom":"Personnalisé"] : ["100×200 cm","150×100 cm",en?"Custom":"Personnalisé"]);
+    const mediaList = s.machine===2
+      ? [en?"Banner":"Bâche","Vinyle","Sticker","Canvas"]
+      : (s.machine===1 ? ["Poster",en?"Matte":"Mat",en?"Gloss":"Brillant","Canvas"] : [en?"Plain paper":"Papier standard","Photo",en?"Matte":"Mat",en?"Gloss":"Brillant",en?"Card":"Cartonné",en?"Sticker":"Autocollant"]);
+    const clampIdx = (v, n) => Number.isInteger(v) ? Math.max(0, Math.min(v, n-1)) : 0;
+    const fmtIdx = clampIdx(sel.format, fmtList.length);
+    const mediaIdx = clampIdx(sel.media, mediaList.length);
+
+    const gFormat = { label:t.gFormat, hint:t.hintCompat, options: fmtList.map((o,i) => ({ label:o, style:chip(fmtIdx===i), pick:selSet("format",i) })) };
+    const gMedia = { label:t.gMedia, hint:t.hintCompat, options: mediaList.map((o,i) => ({ label:o, style:chip(mediaIdx===i), pick:selSet("media",i) })) };
+    const gColor = mkGroup(t.gColor,"","color",[en?"Colour":"Couleur",en?"B&W":"Noir et blanc",en?"Greyscale":"Niveaux de gris"]);
+    const gOrient = mkGroup(t.gOrient,"","orient",["Portrait",en?"Landscape":"Paysage"]);
+    const gDuplex = mkGroup(t.gDuplex,"","duplex",["Recto","Recto-verso"]);
+    const gScale = mkGroup(t.gScale,"","jscale",[en?"Actual size":"Taille réelle",en?"Fit":"Adapter",en?"Fill":"Remplir",en?"Custom":"Personnalisée"]);
+    const gQuality = mkGroup(t.gQuality,"","quality",["Éco","Standard",en?"High":"Haute qualité",en?"Pro":"Professionnelle"]);
+    const gDpi = mkGroup(t.gDpi,"","dpi",["150 dpi","300 dpi","600 dpi"]);
+    const finishList = [en?"Lamination":"Plastification",en?"Binding":"Reliure",en?"Cutting":"Découpe","Œillets",en?"Folding":"Pliage",en?"Stapling":"Agrafage"];
+    const gFinish = { label:t.gFinish, hint:t.hintMulti, options: finishList.map(o => ({
+      label:o, style:chip(s.finish.includes(o)),
+      pick: () => this.setState({ finish: s.finish.includes(o) ? s.finish.filter(x => x!==o) : [...s.finish, o] })
+    })) };
+
+    const groups = s.mode === "fast"
+      ? [gFormat, gColor]
+      : [gFormat, gOrient, gColor, gDuplex, gScale, gMedia, gQuality, gDpi, gFinish];
+
+    const unit = s.machine===2 ? 9.6 : (fmtList[fmtIdx]==="A3" ? 0.9 : 0.5);
+    const pagesN = 3;
+    const base = s.machine===2 ? unit * 2 : unit * pagesN * (sel.color===0 ? 1 : 0.4);
+    const total = (base * s.jobCopies + s.finish.length * 1.5);
+
+    const toolDefs = [
+      {label:"−", act:() => this.setState({zoom:Math.max(25, s.zoom-25)})},
+      {label:"+", act:() => this.setState({zoom:Math.min(200, s.zoom+25)})},
+      {label:en?"Fit":"Ajuster", act:() => this.setState({zoom:100})},
+      {label:"90°", act:() => this.setState({ sel:{...sel, orient: sel.orient===0?1:0} })},
+      {label:en?"Margins":"Marges", act:() => {}},
+      {label:en?"Bleed":"Fond perdu", act:() => {}}
+    ];
+    const tools = toolDefs.map(tl => ({...tl, style:"height:30px;min-width:34px;padding:0 11px;border-radius:8px;border:1px solid var(--line);background:#fff;font-size:12px;font-weight:650;color:var(--ink-2);cursor:pointer;"}));
+
+    const portrait = sel.orient === 0;
+    const sheetH = 420 * (s.zoom/100);
+    const sheetW = sheetH / 1.414;
+    let sw = portrait ? sheetW : sheetH, sh = portrait ? sheetH : sheetW;
+    if(s.machine === 2){
+      const r = s.lfW / s.lfH;
+      const box = 440 * (s.zoom/100);
+      sw = r >= 1 ? box : box * r;
+      sh = r >= 1 ? box / r : box;
+    }
+    const checks = [
+      {label:en?"Resolution":"Résolution", value:en?"excellent":"excellente", note:"300 dpi · 2480 × 3508 px", color:"#15803D"},
+      {label:"Dimensions", value:"A4", note:"210 × 297 mm", color:"#15803D"},
+      {label:"Orientation", value:portrait?"Portrait":(en?"Landscape":"Paysage"), note:en?"matches the document":"conforme au document", color:"#15803D"},
+      {label:en?"Colour space":"Espace colorimétrique", value:"RVB", note:en?"CMYK conversion recommended":"Conversion CMJN recommandée", color:"#B45309"},
+      {label:en?"Bleed":"Fond perdu", value:en?"missing":"manquant", note:en?"3 mm recommended for edge-to-edge":"3 mm recommandés pour un bord perdu", color:"#B91C1C"},
+      {label:en?"Fonts":"Polices", value:en?"embedded":"incorporées", note:"4/4", color:"#15803D"},
+      {label:en?"Large format":"Qualité grand format", value:en?"good":"bonne", note:en?"up to A2 without upscaling":"jusqu'au A2 sans upscale", color:"#15803D"}
+    ];
+    const qualityScale = [
+      {fmt:"A4", w:"100%", label:en?"excellent":"excellente", color:"#15803D"},
+      {fmt:"A3", w:"92%", label:en?"excellent":"excellente", color:"#15803D"},
+      {fmt:"A2", w:"70%", label:en?"good":"bonne", color:"#15803D"},
+      {fmt:"A1", w:"46%", label:en?"fair":"moyenne", color:"#B45309"},
+      {fmt:"A0", w:"22%", label:en?"not advised":"déconseillée", color:"#B91C1C"}
+    ];
+
+    const titles = { dashboard:t.mDash, jobs:t.mJobs, files:t.mFiles, machines:t.mMach, media:t.mMedia, pricing:t.mPrice, history:t.mHist, settings:t.mSet };
+    const kanban = [
+      {label:t.qWait, color:"#7C8B94", n:4, cards:[
+        {name:"contrat-bail.pdf", fmt:"A4 · N&B", qty:"×12", meta:en?"received 14:22":"reçu 14:22", hasBar:false},
+        {name:"menu-brasserie.pdf", fmt:"A3 · couleur", qty:"×40", meta:en?"received 14:18":"reçu 14:18", hasBar:false}
+      ]},
+      {label:t.qPrep, color:"#0E7490", n:2, cards:[
+        {name:"devis-2026-vallee.pdf", fmt:"A4 · couleur", qty:"×3", meta:"Marie C.", hasBar:false},
+        {name:"bache-ouverture.pdf", fmt:"200 × 100 cm", qty:"×1", meta:en?"preflight running":"préflight en cours", hasBar:true, bar:"60%"}
+      ]},
+      {label:t.qReady, color:"#F59E0B", n:3, cards:[
+        {name:"affiche-concert.jpg", fmt:"A2 · couleur", qty:"×25", meta:en?"awaiting go":"attente validation", hasBar:false}
+      ]},
+      {label:t.qPrint, color:"#15803D", n:1, cards:[
+        {name:"flyers-rentree.pdf", fmt:"A5 · couleur", qty:"×500", meta:"HP LaserJet Pro", hasBar:true, bar:"72%"}
+      ]},
+      {label:t.qDone, color:"#C3CDD1", n:9, cards:[
+        {name:"cartes-visite.pdf", fmt:"85 × 55 mm", qty:"×250", meta:en?"deleted":"supprimé", hasBar:false},
+        {name:"plan-chantier.pdf", fmt:"A1", qty:"×2", meta:en?"deleted":"supprimé", hasBar:false}
+      ]}
+    ];
+    const machinePage = [
+      {name:"HP LaserJet Pro M480", driver:"192.168.1.24 · IPP", state:"ONLINE", dot:"#15803D", bg:"#EAF6EF",
+       tags:["A4","A3",en?"colour":"couleur",en?"duplex":"recto-verso","600 dpi"],
+       levels:[{label:en?"Toner CMYK":"Toner CMJN", w:"68%", color:"#15803D"},{label:en?"Paper A4":"Papier A4", w:"84%", color:"#15803D"}]},
+      {name:"Canon imagePROGRAF TX-3100", driver:"192.168.1.31 · IPP", state:"ONLINE", dot:"#15803D", bg:"#EAF6EF",
+       tags:["A2","A1","A0",en?"large format":"grand format","1200 dpi"],
+       levels:[{label:en?"Ink":"Encre", w:"42%", color:"#B45309"},{label:en?"Roll 914 mm":"Rouleau 914 mm", w:"75%", color:"#15803D"}]},
+      {name:"Traceur Roland TrueVIS VG3", driver:"192.168.1.44 · USB", state:"BUSY", dot:"#B45309", bg:"#FEF3D6",
+       tags:[en?"banner":"bâche","vinyle","sticker",en?"cut":"découpe"],
+       levels:[{label:en?"Ink":"Encre", w:"58%", color:"#15803D"},{label:en?"Vinyl roll":"Rouleau vinyle", w:"31%", color:"#B45309"}]},
+      {name:"Xerox VersaLink C625", driver:"192.168.1.19 · IPP", state:"OFFLINE", dot:"#B91C1C", bg:"#FEF2F2",
+       tags:["A4",en?"colour":"couleur",en?"stapling":"agrafage"],
+       levels:[{label:en?"Toner CMYK":"Toner CMJN", w:"12%", color:"#B91C1C"},{label:en?"Paper A4":"Papier A4", w:"0%", color:"#B91C1C"}]}
+    ];
+    const priceRows = [
+      {item:"A4 "+(en?"B&W":"N&B"), unit:en?"per page":"par page", price:"0,10 €", margin:"+62 %", mColor:"#15803D"},
+      {item:en?"A4 colour":"A4 couleur", unit:en?"per page":"par page", price:"0,50 €", margin:"+58 %", mColor:"#15803D"},
+      {item:en?"A3 colour":"A3 couleur", unit:en?"per page":"par page", price:"1,20 €", margin:"+54 %", mColor:"#15803D"},
+      {item:"A1 "+(en?"plan":"plan"), unit:"m²", price:"14,00 €", margin:"+47 %", mColor:"#15803D"},
+      {item:en?"Banner 510 g":"Bâche 510 g", unit:"m²", price:"12,00 €", margin:"+38 %", mColor:"#B45309"},
+      {item:en?"Adhesive vinyl":"Vinyle adhésif", unit:"m²", price:"18,00 €", margin:"+44 %", mColor:"#15803D"},
+      {item:en?"Lamination":"Plastification", unit:en?"flat":"forfait", price:"1,50 €", margin:"+70 %", mColor:"#15803D"},
+      {item:en?"Eyelets":"Œillets", unit:en?"per unit":"à l'unité", price:"0,80 €", margin:"+65 %", mColor:"#15803D"}
+    ];
+    const qrPattern = [];
+    for(let y=0;y<25;y++){
+      for(let x=0;x<25;x++){
+        const inFinder = (x<8&&y<8)||(x>16&&y<8)||(x<8&&y>16);
+        let on;
+        if(inFinder){
+          const fx = x>16?18:1, fy = y>16?18:1;
+          const dx = Math.abs(x-(fx+3)), dy = Math.abs(y-(fy+3));
+          const r = Math.max(dx,dy);
+          on = (x>=fx && x<fx+7 && y>=fy && y<fy+7) && (r===3 || r<=1);
+        } else {
+          on = ((x*7 + y*13 + ((x*y)%11)*3) % 5) < 2;
+        }
+        qrPattern.push({ bg: on ? "#0F1A20" : "#FFFFFF" });
+      }
+    }
+    const tk = s.toastKind;
+    return {
+      t,
+      toastOn: !!s.toastMsg && s.view==="dash",
+      toastMsg: s.toastMsg || "",
+      toastDot: tk==="new" ? "var(--w)" : tk==="del" ? "#7C8B94" : "#4ADE80",
+      simulateArrival: this.simulateArrival,
+      startPrint: this.startPrint, cancelPrint: this.cancelPrint,
+      pjOn: !!s.pj,
+      pjTitle: s.pj===1 ? (en?"Printing":"Impression en cours") : s.pj===2 ? (en?"Document printed. Secure deletion in progress.":"Document imprimé. Suppression sécurisée en cours.") : (en?"File deleted":"Fichier supprimé"),
+      pjSub: s.pj===1 ? ("devis-2026-vallee.pdf · " + (en?"page ":"page ") + Math.max(1, Math.ceil((s.pjP||0)/34)) + "/3") : s.pj===2 ? (en?"overwriting local and server copies":"effacement des copies locales et serveur") : (en?"no copy remains on the platform":"aucune copie ne subsiste sur la plateforme"),
+      pjPct: (s.pj===3 ? 100 : (s.pjP||0)) + "%",
+      pjDot: s.pj===1 ? "var(--a)" : s.pj===2 ? "#7C8B94" : "#15803D",
+      pjBg: s.pj===3 ? "#EAF6EF" : s.pj===2 ? "#F3F6F6" : "var(--a-soft)",
+      isConsole: s.view==="console", isQr: s.view==="qr", isStudio: s.view==="studio", isDs: s.view==="ds",
+      emptyStates: [
+        {title:en?"No file yet":"Aucun fichier reçu", body:en?"Show the QR screen at the counter — files land here the moment a customer sends one.":"Affichez l'écran QR au comptoir. Les fichiers arrivent ici dès l'envoi d'un client.", action:en?"Show QR screen":"Afficher l'écran QR", color:"#C9D4D8", bg:"#FBFCFC"},
+        {title:en?"Print Agent disconnected":"Print Agent déconnecté", body:en?"No machine can be reached. Check that the agent is running on this workstation.":"Aucune machine n'est joignable. Vérifiez que l'agent tourne sur ce poste.", action:en?"Retry connection":"Relancer la connexion", color:"#B91C1C", bg:"#FEF2F2"},
+        {title:en?"File unreadable":"Fichier illisible", body:en?"The PDF is damaged or password-protected. Ask the customer to send it again.":"Le PDF est endommagé ou protégé par mot de passe. Demandez un nouvel envoi au client.", action:en?"Request a new file":"Demander un nouvel envoi", color:"#B45309", bg:"#FEF3D6"},
+        {title:en?"Machine offline":"Machine hors ligne", body:en?"Xerox VersaLink is unreachable. The job can be reassigned to another machine.":"Le Xerox VersaLink est injoignable. Le travail peut être réaffecté à une autre machine.", action:en?"Reassign job":"Réaffecter le travail", color:"#B45309", bg:"#FEF3D6"}
+      ],
+      swatches: [
+        {name:"Primaire", hex:"#0E7490"}, {name:"Primaire foncé", hex:"#0B5A70"}, {name:"Primaire clair", hex:"#E6F2F5"},
+        {name:"Action chaude", hex:"#F59E0B"}, {name:"Encre", hex:"#0F1A20"}, {name:"Encre secondaire", hex:"#4A5A63"},
+        {name:"Ligne", hex:"#E3E8EA"}, {name:"Fond", hex:"#F5F7F7"},
+        {name:"Succès", hex:"#15803D"}, {name:"Attention", hex:"#B45309"}, {name:"Erreur", hex:"#B91C1C"}, {name:"Blanc", hex:"#FFFFFF"}
+      ],
+      split: s.split, splitPct: s.split + "%",
+      setSplit: e => this.setState({ split: Number(e.target.value) }),
+      aiOps: [
+        {k:"sharp", label:en?"Sharpen":"Améliorer netteté", cost:"8 s"},
+        {k:"up2", label:"Upscale ×2", cost:"22 s"},
+        {k:"up4", label:"Upscale ×4", cost:"51 s"},
+        {k:"noise", label:en?"Reduce noise":"Réduire le bruit", cost:"12 s"},
+        {k:"color", label:en?"Enhance colours":"Améliorer couleurs", cost:"6 s"},
+        {k:"contrast", label:en?"Enhance contrast":"Améliorer contraste", cost:"5 s"},
+        {k:"bg", label:en?"Remove background":"Supprimer arrière-plan", cost:"18 s"},
+        {k:"large", label:en?"Prepare for large format":"Préparer grand format", cost:"34 s"}
+      ].map(o => ({
+        ...o,
+        toggle: () => this.setState({ ai: s.ai.includes(o.k) ? s.ai.filter(x => x!==o.k) : [...s.ai, o.k] }),
+        style: "display:flex;align-items:center;gap:10px;width:100%;padding:11px 12px;border-radius:11px;cursor:pointer;text-align:left;"+
+          (s.ai.includes(o.k) ? "border:1.5px solid var(--a);background:var(--a-soft);color:var(--a);" : "border:1.5px solid var(--line);background:#fff;color:var(--ink-2);")
+      })),
+      aiResult: s.ai.includes("up4") ? "720 dpi · A1 OK" : (s.ai.includes("up2") ? "360 dpi · A2 OK" : "180 dpi"),
+      aiTime: (s.ai.length ? (s.ai.length * 14) : 0) + " s",
+      pageTitle: titles[s.nav] || t.mDash,
+      pgDash: s.nav==="dashboard", pgQueue: s.nav==="jobs", pgFiles: s.nav==="files",
+      pgMachines: s.nav==="machines", pgPricing: s.nav==="pricing",
+      pgMedia: s.nav==="media",
+      pgHistory: s.nav==="history", pgSettings: s.nav==="settings", pgEmpty: false,
+      history: [
+        {ref:"#0247", name:"flyers-rentree.pdf", spec:"A5 · couleur · ×500", machine:"HP LaserJet", price:"124,00 €", state:en?"file deleted":"fichier supprimé", color:"#15803D"},
+        {ref:"#0246", name:"plan-chantier.pdf", spec:"A1 · N&B · ×2", machine:"Canon PROGRAF", price:"28,00 €", state:en?"file deleted":"fichier supprimé", color:"#15803D"},
+        {ref:"#0245", name:"cartes-visite.pdf", spec:"85×55 mm · ×250", machine:"HP LaserJet", price:"39,50 €", state:en?"file deleted":"fichier supprimé", color:"#15803D"},
+        {ref:"#0244", name:"bache-soldes.pdf", spec:"300×100 cm · ×1", machine:"Roland TrueVIS", price:"36,00 €", state:en?"deleting":"suppression en cours", color:"#B45309"},
+        {ref:"#0243", name:"menu-brasserie.pdf", spec:"A3 · couleur · ×40", machine:"HP LaserJet", price:"48,00 €", state:en?"file deleted":"fichier supprimé", color:"#15803D"},
+        {ref:"#0242", name:"affiche-salon.jpg", spec:"A2 · couleur · ×10", machine:"Canon PROGRAF", price:"62,00 €", state:en?"cancelled":"annulé", color:"#B91C1C"},
+        {ref:"#0241", name:"contrat-pret.pdf", spec:"A4 · N&B · ×24", machine:"HP LaserJet", price:"2,40 €", state:en?"file deleted":"fichier supprimé", color:"#15803D"},
+        {ref:"#0240", name:"vinyle-vitrine.pdf", spec:"180×120 cm · ×1", machine:"Roland TrueVIS", price:"38,88 €", state:en?"file deleted":"fichier supprimé", color:"#15803D"}
+      ],
+      settingsCards: [
+        {title:en?"Print shop":"Imprimerie", rows:[
+          {k:en?"Name":"Nom", v:"Imprimerie Vallée", color:"var(--ink)"},
+          {k:en?"Station":"Poste", v:"Poste 02", color:"var(--ink)"},
+          {k:en?"Opening hours":"Horaires", v:"08:30 – 19:00", color:"var(--ink)"}
+        ]},
+        {title:"Print Agent", rows:[
+          {k:en?"Status":"État", v:en?"connected":"connecté", color:"#15803D"},
+          {k:"Version", v:"2.4.1", color:"var(--ink)"},
+          {k:en?"Machines detected":"Machines détectées", v:"4", color:"var(--ink)"}
+        ]},
+        {title:en?"Automatic deletion":"Suppression automatique", rows:[
+          {k:en?"Delay after intake":"Délai après réception", v:"20 min", color:"var(--ink)"},
+          {k:en?"After printing":"Après impression", v:en?"immediate":"immédiate", color:"var(--ink)"},
+          {k:en?"Secure wipe":"Effacement sécurisé", v:en?"enabled":"activé", color:"#15803D"}
+        ]},
+        {title:en?"QR screen":"Écran QR", rows:[
+          {k:"URL", v:"imprimerie-vallee.fr/envoi", color:"var(--ink)"},
+          {k:en?"Client preferences":"Préférences client", v:en?"enabled":"activées", color:"#15803D"},
+          {k:en?"Max file size":"Taille max fichier", v:"80 Mo", color:"var(--ink)"}
+        ]}
+      ],
+      mediaPage: [
+        {name:en?"Plain paper 80 g":"Papier standard 80 g", spec:"A4 / A3 · 80 g/m²", machines:"HP LaserJet · Xerox", price:"0,02 €", w:"84%", color:"#15803D", bg:"#EAF6EF", stockLabel:en?"IN STOCK":"EN STOCK"},
+        {name:en?"Coated matte 170 g":"Couché mat 170 g", spec:"A4 / A3 · 170 g/m²", machines:"HP LaserJet", price:"0,14 €", w:"61%", color:"#15803D", bg:"#EAF6EF", stockLabel:en?"IN STOCK":"EN STOCK"},
+        {name:en?"Photo gloss 250 g":"Photo brillant 250 g", spec:"A4 / A3 / A2 · 250 g/m²", machines:"Canon imagePROGRAF", price:"0,48 €", w:"28%", color:"#B45309", bg:"#FEF3D6", stockLabel:en?"LOW":"FAIBLE"},
+        {name:en?"Banner 510 g":"Bâche 510 g", spec:en?"roll 160 cm · PVC":"rouleau 160 cm · PVC", machines:"Roland TrueVIS", price:"12,00 €/m²", w:"55%", color:"#15803D", bg:"#EAF6EF", stockLabel:en?"IN STOCK":"EN STOCK"},
+        {name:en?"Adhesive vinyl":"Vinyle adhésif", spec:en?"roll 137 cm · monomer":"rouleau 137 cm · monomère", machines:"Roland TrueVIS", price:"18,00 €/m²", w:"31%", color:"#B45309", bg:"#FEF3D6", stockLabel:en?"LOW":"FAIBLE"},
+        {name:"Canvas 380 g", spec:en?"roll 91 cm · cotton":"rouleau 91 cm · coton", machines:"Canon imagePROGRAF", price:"24,00 €/m²", w:"0%", color:"#B91C1C", bg:"#FEF2F2", stockLabel:en?"OUT":"ÉPUISÉ"}
+      ],
+      emptyTitle: titles[s.nav] || "",
+      kanban, machinePage, priceRows, qrCells: qrPattern,
+      qrShellStyle: "width:1440px;height:936px;transform:scale(" + s.scale + ");transform-origin:top left;background:var(--bg);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 28px rgba(16,26,32,.07);display:flex;flex-direction:column;align-items:center;padding:52px 40px 44px;",
+      machineOpts, groups, tools, checks, qualityScale,
+      jobCopies: s.jobCopies,
+      incJob: () => this.setState({jobCopies:Math.min(999, s.jobCopies+1)}),
+      decJob: () => this.setState({jobCopies:Math.max(1, s.jobCopies-1)}),
+      setFast: () => this.setState({mode:"fast"}), setPro: () => this.setState({mode:"pro"}),
+      setPanelSet: () => this.setState({panel:"set"}), setPanelPre: () => this.setState({panel:"pre"}),
+      panelSettings: s.panel==="set", panelPreflight: s.panel==="pre",
+      zoomLabel: s.zoom + " %",
+      isLarge: s.machine === 2,
+      lfW: s.lfW, lfH: s.lfH, lfUnit: s.lfUnit,
+      setLfW: e => this.setState({ lfW: Math.max(1, Number(e.target.value) || 1) }),
+      setLfH: e => this.setState({ lfH: Math.max(1, Number(e.target.value) || 1) }),
+      lfUnits: ["mm","cm","m"].map(u => ({
+        label:u, pick:() => this.setState({lfUnit:u}),
+        style:"min-height:26px;padding:3px 9px;border:none;border-radius:6px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;"+
+          (s.lfUnit===u ? "background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(16,26,32,.12);" : "background:transparent;color:var(--ink-3);")
+      })),
+      lfArea: ((s.lfW * s.lfH) * (s.lfUnit==="mm" ? 1e-6 : s.lfUnit==="cm" ? 1e-4 : 1)).toFixed(2).replace(".", ",") + " m²",
+      sheetLabel: s.machine===2
+        ? (s.lfW + " × " + s.lfH + " " + s.lfUnit + " · " + mediaList[mediaIdx])
+        : (fmtList[fmtIdx] + " · " + (portrait ? "portrait" : (en?"landscape":"paysage"))),
+      sheetStyle: "position:relative;background:#fff;box-shadow:0 10px 30px rgba(16,26,32,.16);border:1px solid #DDE3E5;flex:0 0 auto;width:"+Math.round(sw)+"px;height:"+Math.round(sh)+"px;",
+      price: total.toFixed(2).replace(".", ",") + " €",
+      summary: [
+        {k:t.machine, v:machineList[s.machine].name},
+        {k:t.gMedia, v:mediaList[mediaIdx]},
+        {k:t.gFormat, v:fmtList[fmtIdx]},
+        {k:t.copies, v:String(s.jobCopies)},
+        {k:t.gQuality, v:gQuality.options[sel.quality].label}
+      ],
+      thumbs: [1,2,3].map(n => ({
+        n:"p. "+n, pick:() => this.setState({page:n-1}),
+        style:"display:flex;flex-direction:column;gap:5px;width:100%;padding:6px;border-radius:9px;cursor:pointer;"+
+          (s.page===n-1 ? "border:1.5px solid var(--a);background:var(--a-soft);" : "border:1.5px solid transparent;background:transparent;")
+      })),
+      stageRef: el => { if(el && el !== this._stage){ this._stage = el; if(this._ro){ this._ro.disconnect(); this._ro.observe(el); } if(this._measure) this._measure(); } },
+      stageStyle: "margin:0 auto;overflow:hidden;width:" + Math.round(1440 * s.scale) + "px;height:" + Math.round(SHELL_H * s.scale) + "px;",
+      shellStyle: "width:1440px;height:" + SHELL_H + "px;transform:scale(" + s.scale + ");transform-origin:top left;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 28px rgba(16,26,32,.07);display:flex;",
+      isArchi: s.view==="archi", isDash: s.view==="dash", isMobile: s.view==="mobile",
+      go:{ archi:set({view:"archi"}), dash:set({view:"dash"}), console:set({view:"console"}), qr:set({view:"qr"}), studio:set({view:"studio"}), ds:set({view:"ds"}), mobile:set({view:"mobile"}) },
+      setFr: () => this.setState({lang:"fr"}), setEn: () => this.setState({lang:"en"}),
+      tab:{
+        archi:this.tabStyle(s.view==="archi"), dash:this.tabStyle(s.view==="dash"),
+        console:this.tabStyle(s.view==="console"), qr:this.tabStyle(s.view==="qr"), ds:this.tabStyle(s.view==="ds"), mobile:this.tabStyle(s.view==="mobile"),
+        fr:this.tabStyle(s.lang==="fr"), en:this.tabStyle(s.lang==="en"),
+        fast:this.tabStyle(s.mode==="fast"), pro:this.tabStyle(s.mode==="pro"),
+        pset:"flex:1;"+this.tabStyle(s.panel==="set"), ppre:"flex:1;"+this.tabStyle(s.panel==="pre")
+      },
+      nav:{
+        dashboard:set({nav:"dashboard"}), jobs:set({nav:"jobs"}), files:set({nav:"files"}),
+        machines:set({nav:"machines"}), media:set({nav:"media"}), pricing:set({nav:"pricing"}),
+        history:set({nav:"history"}), settings:set({nav:"settings"})
+      },
+      ns:{
+        dashboard:this.navStyle(s.nav==="dashboard"), jobs:this.navStyle(s.nav==="jobs"),
+        files:this.navStyle(s.nav==="files"), machines:this.navStyle(s.nav==="machines"),
+        media:this.navStyle(s.nav==="media"), pricing:this.navStyle(s.nav==="pricing"),
+        history:this.navStyle(s.nav==="history"), settings:this.navStyle(s.nav==="settings")
+      },
+      mapClient:[
+        {id:"C1", name:s.lang==="en"?"QR screen at the counter":"Écran QR au comptoir", note:s.lang==="en"?"Scan opens a web page, no install":"Le scan ouvre une page web, sans installation"},
+        {id:"C2", name:s.lang==="en"?"Send home":"Accueil d'envoi", note:s.lang==="en"?"File picker or camera":"Sélection de fichier ou appareil photo"},
+        {id:"C3", name:s.lang==="en"?"Document and optional preferences":"Document et préférences facultatives", note:s.lang==="en"?"Size, colour, copies — operator confirms":"Format, couleur, exemplaires — confirmés par l'imprimeur"},
+        {id:"C4", name:s.lang==="en"?"Upload progress":"Progression de l'envoi", note:s.lang==="en"?"Single progress bar, cancellable":"Barre de progression unique, annulable"},
+        {id:"C5", name:s.lang==="en"?"Confirmation and reference":"Confirmation et référence", note:s.lang==="en"?"Counter reference #0248, deletion notice":"Référence comptoir #0248, mention de suppression"}
+      ],
+      mapShop:[
+        {id:"P1", name:t.mDash, note:s.lang==="en"?"Incoming jobs, KPIs, queue, machine states":"Nouveaux travaux, indicateurs, file, état des machines"},
+        {id:"P2", name:s.lang==="en"?"Print console":"Console d'impression", note:s.lang==="en"?"Thumbnails · preview · settings panel · summary bar":"Miniatures · aperçu · panneau réglages · barre de résumé"},
+        {id:"P3", name:s.lang==="en"?"Preflight":"Contrôle avant impression", note:s.lang==="en"?"Checklist: resolution, bleed, colour space":"Checklist : résolution, fond perdu, espace colorimétrique"},
+        {id:"P4", name:s.lang==="en"?"AI studio":"Studio IA", note:s.lang==="en"?"Sharpen, upscale, denoise — before/after slider":"Netteté, upscale, débruitage — slider avant/après"},
+        {id:"P5", name:s.lang==="en"?"Large format":"Grand format", note:s.lang==="en"?"Custom dimensions in cm/mm/m, m² surface":"Dimensions libres en cm/mm/m, surface en m²"},
+        {id:"P6", name:t.mMach, note:s.lang==="en"?"Machine cards: online, busy, offline":"Cartes machines : online, busy, offline"},
+        {id:"P7", name:t.mPrice, note:s.lang==="en"?"Per page, per m², finishing surcharges":"Par page, par m², suppléments de finition"},
+        {id:"P8", name:s.lang==="en"?"Secure deletion":"Suppression sécurisée", note:s.lang==="en"?"Countdown on every file, wipe confirmation":"Compte à rebours par fichier, confirmation de purge"}
+      ],
+      kpis:[
+        {label:t.kpi1, value:"128", delta:"+12 %", deltaColor:"#15803D"},
+        {label:t.kpi2, value:"5", delta:s.lang==="en"?"2 urgent":"2 urgents", deltaColor:"#B45309"},
+        {label:t.kpi3, value:"3/4", delta:"Roland · BUSY", deltaColor:"var(--ink-3)"},
+        {label:t.kpi4, value:"412,80 €", delta:"+8 %", deltaColor:"#15803D"},
+        {label:t.kpi5, value:"2 140", delta:s.lang==="en"?"pages":"pages", deltaColor:"var(--ink-3)"},
+        {label:t.kpi6, value:"96", delta:s.lang==="en"?"9 in queue":"9 en file", deltaColor:"var(--ink-3)"}
+      ],
+      jobs, bars, queue:q,
+      machines:[
+        {name:"HP LaserJet Pro M480", spec:"A4 / A3 · couleur · recto-verso", state:"ONLINE", color:"#15803D"},
+        {name:"Canon imagePROGRAF", spec:"A2 / A1 / A0 · grand format", state:"ONLINE", color:"#15803D"},
+        {name:"Traceur Roland TrueVIS", spec:"bâche · vinyle · sticker", state:"BUSY", color:"#B45309"}
+      ],
+      mStep0: s.step===0, mStep1: s.step===1, mStep2: s.step===2, mStep3: s.step===3,
+      pickFile: () => this.setState({step:1}),
+      back: () => this.setState({step:0}),
+      reset: () => this.setState({step:0, progress:0, copies:1}),
+      send: this.send,
+      inc: () => this.setState({copies:Math.min(99, s.copies+1)}),
+      dec: () => this.setState({copies:Math.max(1, s.copies-1)}),
+      copies: s.copies, progress: s.progress + "%",
+      formats, colorModes, steps
+    };
+  }
+}
+
+</script>
+</body>
+</html>

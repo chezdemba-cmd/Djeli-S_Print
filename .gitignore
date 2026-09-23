@@ -1,0 +1,13 @@
+node_modules/
+.next/
+.turbo/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+*.tsbuildinfo
+apps/print-agent/.vite/
+apps/print-agent/temp/
+.supabase/

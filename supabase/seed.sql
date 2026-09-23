@@ -1,0 +1,3 @@
+-- Intentionally empty.
+-- Tenant-specific materials, finishes and pricing are created through authenticated admin flows.
+-- Keeping them as rows rather than application constants allows each print shop to manage its catalog.
