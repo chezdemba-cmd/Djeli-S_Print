@@ -70,6 +70,7 @@ export function DocumentsLive({ organizationId, initialDocuments }: { organizati
               </div>
               <Countdown expiresAt={document.expires_at} />
               <Link className="primary-link document-action" href={`/dashboard/documents/${document.id}`}>APERÇU</Link>
+              {document.status === "READY" ? <Link className="secondary-link document-action" href={`/dashboard/documents/${document.id}/prepare`}>PRÉPARER</Link> : null}
             </div>
           </article>
         ))}

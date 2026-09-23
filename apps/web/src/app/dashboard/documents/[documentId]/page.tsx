@@ -20,6 +20,7 @@ export default async function DocumentPreviewPage({ params }: { params: Promise<
       <header className="preview-header">
         <div><Link href="/dashboard/documents">← Nouveaux fichiers</Link><h1>{document.display_name}</h1><p>{document.mime_type} · {(document.size_bytes / 1_000_000).toFixed(2)} Mo · {document.status}</p></div>
         <span className={`job-status ${String(document.status).toLowerCase()}`}>{document.status}</span>
+        {document.status === "READY" ? <Link className="primary-link" href={`/dashboard/documents/${document.id}/prepare`}>PRÉPARER L’IMPRESSION</Link> : null}
       </header>
       <section className="preview-layout">
         <div className="preview-canvas">

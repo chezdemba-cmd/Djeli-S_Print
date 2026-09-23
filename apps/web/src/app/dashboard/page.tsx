@@ -27,6 +27,7 @@ export default async function DashboardPage() {
       </section>
       <div className="hero-actions">
         <Link className="primary-link" href="/dashboard/documents">NOUVEAUX FICHIERS</Link>
+        <Link className="secondary-link" href="/dashboard/jobs">FILE D’IMPRESSION</Link>
         <Link className="primary-link" href="/dashboard/workstations">GÉRER LES POSTES</Link>
         <Link className="secondary-link" href="/dashboard/qr">AFFICHER UN QR</Link>
       </div>
