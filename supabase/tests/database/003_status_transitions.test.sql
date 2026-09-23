@@ -38,7 +38,7 @@ values (
 );
 insert into public.documents (
   id, organization_id, print_session_id, storage_path, original_filename,
-  display_name, mime_type, size_bytes, expires_at
+  display_name, mime_type, size_bytes, expires_at, created_at
 )
 values (
   '80000000-0000-0000-0000-000000000001',
@@ -46,7 +46,8 @@ values (
   '70000000-0000-0000-0000-000000000001',
   '50000000-0000-0000-0000-000000000001/80000000-0000-0000-0000-000000000001/source.pdf',
   'source.pdf', 'source.pdf', 'application/pdf', 1024,
-  now() + interval '20 minutes'
+  clock_timestamp() + interval '20 minutes',
+  clock_timestamp() - interval '30 minutes'
 );
 
 update public.documents set status = 'UPLOADING'
@@ -66,7 +67,7 @@ select throws_ok(
 );
 
 update public.documents
-set expires_at = now() - interval '1 minute'
+set expires_at = clock_timestamp() - interval '1 minute'
 where id = '80000000-0000-0000-0000-000000000001';
 select is(public.enqueue_expired_documents(10), 1, 'expired document is queued once');
 
