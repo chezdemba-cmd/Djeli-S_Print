@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { detectMime, type AllowedMime } from "@/lib/file-signature";
 import { hashSessionToken } from "@/lib/session-token";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { analyzeDocument } from "@/lib/preflight/analyze-document";
 
 export async function POST(_request: Request, context: { params: Promise<{ token: string; documentId: string }> }) {
   const { token, documentId } = await context.params;
@@ -40,5 +41,8 @@ export async function POST(_request: Request, context: { params: Promise<{ token
 
   const { error } = await admin.from("documents").update({ status: "RECEIVED", received_at: new Date().toISOString() }).eq("id", document.id);
   if (error) return NextResponse.json({ error: "Finalisation impossible." }, { status: 500 });
+  after(() => analyzeDocument(document.id));
   return NextResponse.json({ documentId: document.id, status: "RECEIVED" });
 }
+
+export const maxDuration = 60;

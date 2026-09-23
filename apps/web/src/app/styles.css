@@ -129,6 +129,14 @@ a:hover { text-decoration: underline; }
 .preview-details dt { color: var(--muted); }
 .preview-details dd { margin: 0; text-align: right; font-weight: 700; }
 .signed-url-note { color: var(--muted); font-size: 11px; line-height: 1.5; }
+.preflight-summary { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
+.quality-badge { display: inline-flex; margin: 6px 0 10px; padding: 6px 8px; border-radius: 6px; background: #e6f2f5; color: var(--accent); font: 700 10px/1 monospace; }
+.quality-badge.excellent, .quality-badge.good { background: #eaf6ef; color: #15803d; }
+.quality-badge.low, .quality-badge.not_recommended { background: #fef2f2; color: #b91c1c; }
+.quality-list { display: grid; }
+.quality-list div { display: grid; grid-template-columns: 40px 1fr auto; gap: 8px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 11px; }
+.quality-list span { color: var(--muted); }
+.quality-list em { font-style: normal; font: 600 9px/1.4 monospace; }
 @media (max-width: 900px) { .preview-layout { grid-template-columns: 1fr; } .preview-details { order: -1; } }
 
 @media (max-width: 560px) {

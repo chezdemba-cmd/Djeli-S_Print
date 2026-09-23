@@ -8,11 +8,12 @@ export default async function DocumentPreviewPage({ params }: { params: Promise<
   const { documentId } = await params;
   const supabase = await createClient();
   const { data: document } = await supabase.from("documents")
-    .select("id, display_name, mime_type, size_bytes, status, storage_path, page_count, width_px, height_px, source_dpi, expires_at, created_at")
+    .select("id, display_name, mime_type, size_bytes, status, storage_path, page_count, width_px, height_px, width_mm, height_mm, source_dpi, preflight_rating, preflight_data, expires_at, created_at")
     .eq("id", documentId).maybeSingle();
   if (!document) notFound();
   const { data: signed } = await supabase.storage.from("documents").createSignedUrl(document.storage_path, 300);
   if (!signed?.signedUrl) throw new Error("Impossible de créer l’aperçu privé.");
+  const preflight = document.preflight_data as { formatQualities?: Array<{ format: string; dpi: number; rating: string }>; orientation?: string; pageSizesConsistent?: boolean };
 
   return (
     <main className="preview-shell">
@@ -39,6 +40,14 @@ export default async function DocumentPreviewPage({ params }: { params: Promise<
             <div><dt>Expiration</dt><dd>{new Date(document.expires_at).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}</dd></div>
           </dl>
           <p className="signed-url-note">Aperçu signé valable 5 minutes. Le fichier reste privé.</p>
+          {document.preflight_rating ? (
+            <div className="preflight-summary">
+              <h2>Préflight</h2>
+              <span className={`quality-badge ${String(document.preflight_rating).toLowerCase()}`}>{document.preflight_rating}</span>
+              {document.width_mm && document.height_mm ? <p>{document.width_mm} × {document.height_mm} mm · {preflight.orientation}</p> : null}
+              {preflight.formatQualities ? <div className="quality-list">{preflight.formatQualities.map((item) => <div key={item.format}><strong>{item.format}</strong><span>{item.dpi} DPI</span><em>{item.rating}</em></div>)}</div> : null}
+            </div>
+          ) : null}
         </aside>
       </section>
     </main>
