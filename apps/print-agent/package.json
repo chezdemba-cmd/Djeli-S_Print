@@ -1,6 +1,8 @@
 {
   "name": "@djelis-print/print-agent",
   "version": "0.1.0",
+  "description": "Agent Windows sécurisé pour la plateforme d’impression Djeli'S Print",
+  "author": "Djeli'S Print",
   "private": true,
   "main": "dist/main/index.js",
   "scripts": {
@@ -8,15 +10,47 @@
     "dev": "tsc -p tsconfig.json --watch",
     "lint": "tsc --noEmit",
     "start": "electron dist/main/index.js",
+    "package:win": "pnpm run build && electron-builder --win nsis --x64 && electron-builder --win nsis --arm64",
+    "package:win:x64": "pnpm run build && electron-builder --win nsis --x64",
+    "package:win:arm64": "pnpm run build && electron-builder --win nsis --arm64",
     "test": "tsc -p tsconfig.json && node --test dist/core/*.test.js",
     "typecheck": "tsc --noEmit"
   },
-  "dependencies": {
-    "@djelis-print/contracts": "workspace:*"
+  "dependencies": {},
+  "build": {
+    "appId": "com.djelisprint.agent",
+    "productName": "Djeli'S Print Agent",
+    "asar": true,
+    "compression": "normal",
+    "directories": {
+      "buildResources": "build",
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "build/icon.png",
+      "executableName": "DjelisPrintAgent",
+      "target": "nsis",
+      "artifactName": "Djelis-Print-Agent-${version}-${arch}-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": false,
+      "deleteAppDataOnUninstall": true
+    }
   },
   "devDependencies": {
+    "@djelis-print/contracts": "workspace:*",
     "@types/node": "24.5.2",
     "electron": "44.4.3",
+    "electron-builder": "26.15.3",
     "typescript": "5.9.2"
   }
 }

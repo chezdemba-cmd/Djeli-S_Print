@@ -13,6 +13,7 @@
       <h1>Print Agent</h1>
       <div id="status" class="status">Initialisation…</div>
       <form id="pair-form" hidden>
+        <label>Adresse sécurisée de la plateforme<input id="server-url" type="url" value="http://localhost:3000" placeholder="https://print.example.com" required /></label>
         <label>Code d’appairage<input id="pair-code" autocomplete="one-time-code" minlength="32" required /></label>
         <button type="submit">LIER CE POSTE</button>
       </form>

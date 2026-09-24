@@ -1,7 +1,8 @@
 import type { AgentPrinterSnapshot, AgentPrintJob, DocumentStatus } from "@djelis-print/contracts";
 
 export class AgentApi {
-  constructor(private readonly baseUrl: string, private token: string | null = null) {}
+  constructor(private baseUrl: string, private token: string | null = null) {}
+  setBaseUrl(baseUrl: string) { this.baseUrl = baseUrl.replace(/\/$/, ""); }
   setToken(token: string) { this.token = token; }
   async pair(pairingCode: string, agentIdentifier: string, agentVersion: string) {
     const response = await fetch(`${this.baseUrl}/api/agent/pair`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ pairingCode, agentIdentifier, agentVersion }), signal: AbortSignal.timeout(15_000) });

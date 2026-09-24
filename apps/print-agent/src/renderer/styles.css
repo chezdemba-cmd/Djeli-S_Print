@@ -5,7 +5,7 @@ main { width: min(560px, calc(100vw - 64px)); padding: 48px; border: 1px solid #
 h1 { font-size: 48px; margin: 8px 0 28px; }
 .status { padding: 18px; background: #202019; border-left: 4px solid #f8b900; border-radius: 8px; }
 form { margin-top: 28px; }
-label { display: grid; gap: 10px; color: #d7d7ce; }
+label { display: grid; gap: 10px; margin-top: 14px; color: #d7d7ce; }
 input { padding: 14px; color: white; background: #080808; border: 1px solid #555; border-radius: 8px; font: inherit; }
 button { margin-top: 16px; padding: 14px 20px; border: 0; border-radius: 8px; background: #f8b900; color: #151000; font-weight: 900; cursor: pointer; }
 #message { min-height: 24px; color: #e5c76e; }

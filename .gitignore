@@ -10,5 +10,6 @@ coverage/
 *.tsbuildinfo
 apps/print-agent/.vite/
 apps/print-agent/temp/
+apps/print-agent/release/
 .supabase/
 supabase/.temp/

@@ -3,11 +3,12 @@ import { randomUUID } from "node:crypto";
 import path from "node:path";
 import { AgentApi } from "../core/agent-api.js";
 import { JobRunner } from "../core/job-runner.js";
+import { normalizeServerUrl } from "../core/server-url.js";
 import { ElectronPrinterProvider } from "./electron-printer-provider.js";
 import { loadConfig, saveConfig } from "./secure-config.js";
 import { AgentTemporaryFiles } from "./temporary-files.js";
 
-const serverUrl = (process.env.DJELIS_PRINT_SERVER_URL ?? "http://localhost:3000").replace(/\/$/, "");
+let serverUrl = (process.env.DJELIS_PRINT_SERVER_URL ?? "http://localhost:3000").replace(/\/$/, "");
 const api = new AgentApi(serverUrl);
 let mainWindow: BrowserWindow;
 let runner: JobRunner;
@@ -28,12 +29,19 @@ void app.whenReady().then(async () => {
   const printers = new ElectronPrinterProvider(() => mainWindow);
   runner = new JobRunner(api, printers, new AgentTemporaryFiles());
   const config = await loadConfig();
-  if (config) { api.setToken(config.token); pairedName = config.workstationName; }
+  if (config) {
+    api.setToken(config.token);
+    pairedName = config.workstationName;
+    if (config.serverUrl) { serverUrl = config.serverUrl; api.setBaseUrl(serverUrl); }
+  }
 
   ipcMain.handle("agent:state", () => ({ paired: Boolean(pairedName), workstationName: pairedName, serverUrl }));
-  ipcMain.handle("agent:pair", async (_event, code: string) => {
-    const result = await api.pair(code, `${process.platform}-${randomUUID()}`, app.getVersion());
-    await saveConfig(result.token, result.workstation);
+  ipcMain.handle("agent:pair", async (_event, input: { code: string; serverUrl: string }) => {
+    const requestedUrl = normalizeServerUrl(input.serverUrl);
+    api.setBaseUrl(requestedUrl);
+    const result = await api.pair(input.code, `${process.platform}-${randomUUID()}`, app.getVersion());
+    await saveConfig(result.token, result.workstation, requestedUrl);
+    serverUrl = requestedUrl;
     api.setToken(result.token); pairedName = result.workstation.name;
     app.setLoginItemSettings({ openAtLogin: true });
     return { paired: true, workstationName: pairedName };
