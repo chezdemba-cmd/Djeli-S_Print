@@ -11,6 +11,8 @@ export async function GET(request: Request) {
   }
 
   const admin = createAdminClient();
+  const { error: healthError } = await admin.rpc("maintain_print_agent_health");
+  if (healthError) return Response.json({ error: "Maintenance des agents indisponible." }, { status: 503 });
   const { data, error } = await admin.rpc("claim_document_deletions", { batch_size: 50 });
   if (error) return Response.json({ error: "File de suppression indisponible." }, { status: 503 });
 

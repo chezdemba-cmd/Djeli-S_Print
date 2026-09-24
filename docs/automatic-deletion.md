@@ -12,6 +12,8 @@ La suppression est pilotée par une file durable `deletion_requests`.
 
 La route `GET /api/cron/cleanup` exige `Authorization: Bearer $CRON_SECRET`. Vercel l’appelle toutes les cinq minutes via `vercel.json`. Cette fréquence nécessite un plan Vercel autorisant les crons infrajournaliers; sinon, utiliser un planificateur externe avec le même en-tête.
 
+Le même cycle marque `OFFLINE` les postes sans heartbeat depuis une minute et place en échec contrôlé les travaux abandonnés par un agent, afin qu’ils ne restent jamais bloqués indéfiniment.
+
 Variables serveur nécessaires :
 
 ```env

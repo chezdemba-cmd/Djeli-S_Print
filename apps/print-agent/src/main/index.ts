@@ -16,6 +16,8 @@ let synchronizing = false;
 
 function createWindow() {
   mainWindow = new BrowserWindow({ width: 760, height: 620, show: false, webPreferences: { contextIsolation: true, nodeIntegration: false, sandbox: true, preload: path.join(__dirname, "preload.js") } });
+  mainWindow.webContents.setWindowOpenHandler(() => ({ action: "deny" }));
+  mainWindow.webContents.on("will-navigate", (event, url) => { if (!url.startsWith("file:")) event.preventDefault(); });
   mainWindow.once("ready-to-show", () => mainWindow.show());
   void mainWindow.loadFile(path.join(__dirname, "../renderer/index.html"));
   return mainWindow;
@@ -45,7 +47,7 @@ void app.whenReady().then(async () => {
     finally { synchronizing = false; }
   };
   await synchronize();
-  setInterval(() => void synchronize(), 10_000).unref();
+  setInterval(() => void synchronize(), 20_000).unref();
   app.on("activate", () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 });
 

@@ -3,8 +3,12 @@ import { detectMime, type AllowedMime } from "@/lib/file-signature";
 import { hashSessionToken } from "@/lib/session-token";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { analyzeDocument } from "@/lib/preflight/analyze-document";
+import { consumeRateLimit } from "@/lib/rate-limit";
 
-export async function POST(_request: Request, context: { params: Promise<{ token: string; documentId: string }> }) {
+export async function POST(request: Request, context: { params: Promise<{ token: string; documentId: string }> }) {
+  if (!await consumeRateLimit(request, "public-upload-finalize", 30, 600)) {
+    return NextResponse.json({ error: "Trop de tentatives. Réessayez plus tard." }, { status: 429 });
+  }
   const { token, documentId } = await context.params;
   if (!/^[A-Za-z0-9_-]{43}$/.test(token) || !/^[a-f0-9-]{36}$/i.test(documentId)) {
     return NextResponse.json({ error: "Requête invalide." }, { status: 400 });

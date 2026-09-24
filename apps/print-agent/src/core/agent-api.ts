@@ -4,7 +4,7 @@ export class AgentApi {
   constructor(private readonly baseUrl: string, private token: string | null = null) {}
   setToken(token: string) { this.token = token; }
   async pair(pairingCode: string, agentIdentifier: string, agentVersion: string) {
-    const response = await fetch(`${this.baseUrl}/api/agent/pair`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ pairingCode, agentIdentifier, agentVersion }) });
+    const response = await fetch(`${this.baseUrl}/api/agent/pair`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ pairingCode, agentIdentifier, agentVersion }), signal: AbortSignal.timeout(15_000) });
     if (!response.ok) throw new Error(await errorMessage(response));
     return response.json() as Promise<{ token: string; workstation: { id: string; name: string } }>;
   }
@@ -19,7 +19,7 @@ export class AgentApi {
   }
   private async authorized(path: string, body: unknown) {
     if (!this.token) throw new Error("Agent non appairé");
-    const response = await fetch(`${this.baseUrl}${path}`, { method: "POST", headers: { authorization: `Bearer ${this.token}`, "content-type": "application/json" }, body: JSON.stringify(body) });
+    const response = await fetch(`${this.baseUrl}${path}`, { method: "POST", headers: { authorization: `Bearer ${this.token}`, "content-type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(15_000) });
     if (!response.ok) throw new Error(await errorMessage(response));
     return response;
   }

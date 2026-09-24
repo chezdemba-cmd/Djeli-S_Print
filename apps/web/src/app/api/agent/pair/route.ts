@@ -1,7 +1,11 @@
 import { createAgentSecret, hashAgentSecret } from "@/lib/agent-crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { consumeRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
+  if (!await consumeRateLimit(request, "agent-pair", 20, 600)) {
+    return Response.json({ error: "Trop de tentatives. Réessayez plus tard." }, { status: 429 });
+  }
   const body = await request.json().catch(() => null) as Record<string, unknown> | null;
   const pairingCode = typeof body?.pairingCode === "string" ? body.pairingCode.trim() : "";
   const agentIdentifier = typeof body?.agentIdentifier === "string" ? body.agentIdentifier.trim() : "";

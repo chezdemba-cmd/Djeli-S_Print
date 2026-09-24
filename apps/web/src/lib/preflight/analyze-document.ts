@@ -19,9 +19,11 @@ export async function analyzeDocument(documentId: string) {
       const pdf = await PDFDocument.load(await blob.arrayBuffer(), { ignoreEncryption: true, updateMetadata: false });
       const pages = pdf.getPages();
       if (pages.length === 0) throw new Error("Empty PDF");
+      if (pages.length > 1000) throw new Error("PDF page limit exceeded");
       const first = pages[0]!.getSize();
       const widthMm = first.width * 25.4 / 72;
       const heightMm = first.height * 25.4 / 72;
+      if (widthMm > 5080 || heightMm > 5080 || widthMm < 1 || heightMm < 1) throw new Error("PDF dimensions unsafe");
       await admin.from("documents").update({
         status: "READY", page_count: pages.length,
         width_mm: Number(widthMm.toFixed(2)), height_mm: Number(heightMm.toFixed(2)),
@@ -37,6 +39,9 @@ export async function analyzeDocument(documentId: string) {
     if (response.status !== 206) throw new Error("Image range failed");
     const dimensions = readImageDimensions(new Uint8Array(await response.arrayBuffer()), document.mime_type);
     if (!dimensions || dimensions.width < 1 || dimensions.height < 1) throw new Error("Image dimensions unavailable");
+    if (dimensions.width > 100_000 || dimensions.height > 100_000 || dimensions.width * dimensions.height > 400_000_000) {
+      throw new Error("Image dimensions unsafe");
+    }
     const qualities = imageQualityByFormat(dimensions.width, dimensions.height);
     const a4 = qualities.find((item) => item.format === "A4")!;
     await admin.from("documents").update({
