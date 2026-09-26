@@ -11,8 +11,7 @@ export default async function DocumentPreviewPage({ params }: { params: Promise<
     .select("id, display_name, mime_type, size_bytes, status, storage_path, page_count, width_px, height_px, width_mm, height_mm, source_dpi, preflight_rating, preflight_data, expires_at, created_at")
     .eq("id", documentId).maybeSingle();
   if (!document) notFound();
-  const { data: signed } = await supabase.storage.from("documents").createSignedUrl(document.storage_path, 300);
-  if (!signed?.signedUrl) throw new Error("Impossible de créer l’aperçu privé.");
+  const previewUrl = `/api/documents/${document.id}/preview`;
   const preflight = document.preflight_data as { formatQualities?: Array<{ format: string; dpi: number; rating: string }>; orientation?: string; pageSizesConsistent?: boolean };
 
   return (
@@ -25,11 +24,11 @@ export default async function DocumentPreviewPage({ params }: { params: Promise<
       <section className="preview-layout">
         <div className="preview-canvas">
           {document.mime_type === "application/pdf" ? (
-            <iframe title={`Aperçu de ${document.display_name}`} src={signed.signedUrl} sandbox="allow-same-origin" referrerPolicy="no-referrer" />
+            <iframe title={`Aperçu de ${document.display_name}`} src={previewUrl} referrerPolicy="no-referrer" />
           ) : (
             // Signed private URL; using a native image avoids allowing arbitrary hosts in Next config.
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={signed.signedUrl} alt={`Aperçu de ${document.display_name}`} referrerPolicy="no-referrer" />
+            <img src={previewUrl} alt={`Aperçu de ${document.display_name}`} referrerPolicy="no-referrer" />
           )}
         </div>
         <aside className="preview-details">
@@ -40,7 +39,7 @@ export default async function DocumentPreviewPage({ params }: { params: Promise<
             <div><dt>Résolution</dt><dd>{document.source_dpi ? `${Math.round(document.source_dpi)} DPI` : "Analyse en attente"}</dd></div>
             <div><dt>Expiration</dt><dd>{new Date(document.expires_at).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}</dd></div>
           </dl>
-          <p className="signed-url-note">Aperçu signé valable 5 minutes. Le fichier reste privé.</p>
+          <p className="signed-url-note">Aperçu privé accessible uniquement depuis votre session.</p>
           {document.preflight_rating ? (
             <div className="preflight-summary">
               <h2>Préflight</h2>
