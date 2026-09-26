@@ -17,4 +17,4 @@ Les transitions `PROCESSING → PRINTING → PRINTED` (ou `FAILED`) sont report�
 
 ## Configuration
 
-`DJELIS_PRINT_SERVER_URL` indique l’URL de l’application web et vaut `http://localhost:3000` par défaut. L’application active le démarrage à l’ouverture de session après un appairage réussi.
+`DJELIS_PRINT_SERVER_URL` indique l’URL de l’application web et vaut `http://localhost:3100` par défaut. L’application active le démarrage à l’ouverture de session après un appairage réussi.

@@ -8,7 +8,7 @@ import { ElectronPrinterProvider } from "./electron-printer-provider.js";
 import { loadConfig, saveConfig } from "./secure-config.js";
 import { AgentTemporaryFiles } from "./temporary-files.js";
 
-let serverUrl = (process.env.DJELIS_PRINT_SERVER_URL ?? "http://localhost:3000").replace(/\/$/, "");
+let serverUrl = (process.env.DJELIS_PRINT_SERVER_URL ?? "http://localhost:3100").replace(/\/$/, "");
 const api = new AgentApi(serverUrl);
 let mainWindow: BrowserWindow;
 let runner: JobRunner;

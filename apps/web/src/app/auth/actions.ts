@@ -32,7 +32,7 @@ export async function signUp(formData: FormData) {
   const validationError = validateRegistration({ displayName, email, password });
   if (validationError) authError("/auth/register", validationError);
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3100";
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({
     email,

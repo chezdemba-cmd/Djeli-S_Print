@@ -39,6 +39,7 @@ export function MobileUpload({ token, maxUploadBytes }: { token: string; maxUplo
     const endpoint = `${projectUrl.replace(".supabase.co", ".storage.supabase.co")}/storage/v1/upload/resumable`;
     const upload = new tus.Upload(file, {
       endpoint,
+      fingerprint: () => Promise.resolve(`djelis-print-${reservation.documentId}-${file.name}-${file.size}`),
       retryDelays: [0, 1000, 3000, 5000, 10000],
       chunkSize: 6 * 1024 * 1024,
       uploadDataDuringCreation: true,
@@ -46,7 +47,11 @@ export function MobileUpload({ token, maxUploadBytes }: { token: string; maxUplo
       headers: { "x-signature": reservation.uploadToken },
       metadata: { bucketName: "documents", objectName: reservation.path, contentType: file.type, cacheControl: "no-cache" },
       onProgress(bytesUploaded, bytesTotal) { setProgress(Math.round((bytesUploaded / bytesTotal) * 100)); },
-      onError() { setPhase("error"); setMessage("L’envoi a été interrompu. Réessayez avec un nouveau QR."); },
+      onError(error) {
+        const status = "originalResponse" in error ? error.originalResponse?.getStatus() : undefined;
+        setPhase("error");
+        setMessage(status ? `L’envoi a été interrompu (erreur ${status}). Générez un nouveau QR puis réessayez.` : "L’envoi a été interrompu. Vérifiez le réseau puis réessayez avec un nouveau QR.");
+      },
       async onSuccess() {
         setProgress(100); setPhase("finalizing");
         const result = await fetch(`/api/s/${token}/uploads/${reservation.documentId}/finalize`, { method: "POST" });

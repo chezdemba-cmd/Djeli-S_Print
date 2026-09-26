@@ -7,6 +7,7 @@ if (existsSync(sharedEnvFile)) process.loadEnvFile(sharedEnvFile);
 
 const nextConfig: NextConfig = {
   agentRules: false,
+  allowedDevOrigins: ["172.20.10.4"],
   poweredByHeader: false,
   reactStrictMode: true,
   transpilePackages: ["@djelis-print/contracts"],

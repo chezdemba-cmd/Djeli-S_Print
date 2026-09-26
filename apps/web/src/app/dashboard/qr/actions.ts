@@ -52,7 +52,7 @@ export async function createQrSession(
     .single();
 
   if (error || !data) return { error: "Impossible de créer la session QR." };
-  const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000").replace(/\/$/, "");
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3100").replace(/\/$/, "");
 
   return {
     token,

@@ -10,5 +10,5 @@ test("production agent only accepts an HTTPS origin", () => {
 });
 
 test("localhost HTTP remains available for development", () => {
-  assert.equal(normalizeServerUrl("http://localhost:3000"), "http://localhost:3000");
+  assert.equal(normalizeServerUrl("http://localhost:3100"), "http://localhost:3100");
 });
