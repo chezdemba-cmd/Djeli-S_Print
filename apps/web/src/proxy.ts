@@ -6,9 +6,14 @@ export async function proxy(request: NextRequest) {
   const nonce = randomBytes(16).toString("base64");
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseHost = supabaseUrl ? new URL(supabaseUrl).host : null;
+  // Next/Turbopack's dev server needs eval() for HMR and debugging; never
+  // relaxed in production, where React itself never calls eval().
+  const scriptSrc = process.env.NODE_ENV === "production"
+    ? `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`
+    : `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-eval'`;
   const contentSecurityPolicy = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+    scriptSrc,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self'",
