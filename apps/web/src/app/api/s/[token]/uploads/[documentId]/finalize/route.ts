@@ -52,15 +52,16 @@ export async function POST(request: Request, context: { params: Promise<{ token:
     return NextResponse.json({ error: "Le fichier a été rejeté par l’analyse antivirus." }, { status: 422 });
   }
 
-  const { error: consumeError } = await admin.rpc("consume_upload_slot", { target_session_id: document.print_session_id });
+  const { error: consumeError } = await admin.rpc("finalize_document_upload", {
+    target_session_id: document.print_session_id,
+    target_document_id: document.id,
+  });
   if (consumeError) {
     await admin.storage.from("documents").remove([document.storage_path]);
     await admin.from("documents").update({ status: "FAILED", error_code: "QUOTA_EXCEEDED", error_message: "Le quota d’envoi de cette session est déjà atteint." }).eq("id", document.id);
     return NextResponse.json({ error: "Le quota d’envoi de cette session est déjà atteint." }, { status: 409 });
   }
 
-  const { error } = await admin.from("documents").update({ status: "RECEIVED", received_at: new Date().toISOString() }).eq("id", document.id);
-  if (error) return NextResponse.json({ error: "Finalisation impossible." }, { status: 500 });
   after(() => analyzeDocument(document.id).catch((analyzeError) => captureError("finalize.analyze_document", analyzeError, { documentId: document.id })));
   return NextResponse.json({ documentId: document.id, status: "RECEIVED" });
 }

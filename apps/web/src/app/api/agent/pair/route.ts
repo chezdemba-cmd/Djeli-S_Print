@@ -1,4 +1,4 @@
-import { createAgentSecret, hashAgentSecret } from "@/lib/agent-crypto";
+import { agentSecretHashCandidates, createAgentSecret, hashAgentSecret } from "@/lib/agent-crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { consumeRateLimit } from "@/lib/rate-limit";
 
@@ -17,8 +17,8 @@ export async function POST(request: Request) {
   const admin = createAdminClient();
   const now = new Date().toISOString();
   const { data: workstation } = await admin.from("workstations")
-    .select("id, organization_id, name")
-    .eq("pairing_secret_hash", hashAgentSecret(pairingCode))
+    .select("id, organization_id, name, pairing_secret_hash")
+    .in("pairing_secret_hash", agentSecretHashCandidates(pairingCode))
     .gt("pairing_expires_at", now)
     .maybeSingle();
   if (!workstation) return Response.json({ error: "Code invalide ou expiré." }, { status: 401 });
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     paired_at: now,
     last_seen_at: now,
     status: "ONLINE",
-  }).eq("id", workstation.id).eq("pairing_secret_hash", hashAgentSecret(pairingCode)).select("id").maybeSingle();
+  }).eq("id", workstation.id).eq("pairing_secret_hash", workstation.pairing_secret_hash).select("id").maybeSingle();
   if (error || !paired) return Response.json({ error: "Appairage impossible." }, { status: 409 });
 
   return Response.json({ token, workstation: { id: workstation.id, name: workstation.name } });

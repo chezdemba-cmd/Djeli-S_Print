@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createAdminClient } from "@/lib/supabase/admin";
-import { hashAgentSecret } from "@/lib/agent-crypto";
+import { agentSecretHashCandidates } from "@/lib/agent-crypto";
 
 export async function authenticateAgent(request: Request) {
   const authorization = request.headers.get("authorization") ?? "";
@@ -12,7 +12,7 @@ export async function authenticateAgent(request: Request) {
   const { data } = await admin
     .from("workstations")
     .select("id, organization_id, name")
-    .eq("agent_token_hash", hashAgentSecret(token))
+    .in("agent_token_hash", agentSecretHashCandidates(token))
     .maybeSingle();
   return data;
 }
