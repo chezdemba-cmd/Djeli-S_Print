@@ -1,0 +1,32 @@
+name: Cron cleanup
+
+# Vercel's Hobby plan only allows daily cron schedules, so the 5-minute
+# cadence this app needs (documents must be purged shortly after printing or
+# expiry — see docs/automatic-deletion.md) is driven from here instead of
+# apps/web/vercel.json. GitHub's schedule is best-effort, not exact-on-time,
+# so actual runs can lag a few minutes under load; that only delays deletion
+# slightly, it never weakens access control (Storage stays private, RLS
+# still applies either way).
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call /api/cron/cleanup
+        run: |
+          status=$(curl -sS -o /tmp/body -w "%{http_code}" \
+            -X GET "${CLEANUP_URL}" \
+            -H "Authorization: Bearer ${CRON_SECRET}")
+          cat /tmp/body
+          if [ "$status" -ge 300 ]; then
+            echo "cleanup endpoint returned HTTP $status"
+            exit 1
+          fi
+        env:
+          CLEANUP_URL: https://djeli-s-print.vercel.app/api/cron/cleanup
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}

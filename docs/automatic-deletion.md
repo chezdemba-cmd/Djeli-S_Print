@@ -10,7 +10,7 @@ La suppression est pilotée par une file durable `deletion_requests`.
 - Un échec Storage est retenté avec un délai exponentiel, au maximum dix fois.
 - Une demande bloquée en `PROCESSING` plus de dix minutes est automatiquement récupérée.
 
-La route `GET /api/cron/cleanup` exige `Authorization: Bearer $CRON_SECRET`. Vercel l’appelle toutes les cinq minutes via `vercel.json`. Cette fréquence nécessite un plan Vercel autorisant les crons infrajournaliers; sinon, utiliser un planificateur externe avec le même en-tête.
+La route `GET /api/cron/cleanup` exige `Authorization: Bearer $CRON_SECRET`. Le plan Vercel Hobby n'autorisant que des crons quotidiens, l'appel toutes les cinq minutes est piloté par un workflow GitHub Actions planifié (`.github/workflows/cron-cleanup.yml`), pas par `vercel.json`. Ce workflow lit le secret `CRON_SECRET` du dépôt GitHub (Settings → Secrets and variables → Actions) — il doit avoir exactement la même valeur que la variable d'environnement `CRON_SECRET` du projet Vercel. La planification GitHub Actions est au mieux (« best-effort »), pas garantie à la minute près ; un léger retard occasionnel repousse la suppression de quelques minutes sans jamais affaiblir le contrôle d'accès (le bucket reste privé, RLS s'applique dans tous les cas). Si le projet passe un jour sur un plan Vercel Pro, `crons` peut être réintroduit dans `apps/web/vercel.json` à la place.
 
 Le même cycle marque `OFFLINE` les postes sans heartbeat depuis une minute et place en échec contrôlé les travaux abandonnés par un agent, afin qu’ils ne restent jamais bloqués indéfiniment.
 
