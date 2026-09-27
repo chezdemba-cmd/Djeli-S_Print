@@ -6,9 +6,10 @@ export async function proxy(request: NextRequest) {
   const nonce = randomBytes(16).toString("base64");
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseHost = supabaseUrl ? new URL(supabaseUrl).host : null;
+  const developmentEval = process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : "";
   const contentSecurityPolicy = [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${developmentEval}`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self'",

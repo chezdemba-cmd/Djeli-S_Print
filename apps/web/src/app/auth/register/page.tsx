@@ -14,7 +14,12 @@ export default async function RegisterPage({ searchParams }: RegisterPageProps) 
 
   return (
     <main className="auth-shell">
-      <section className="auth-card">
+      <section className="auth-showcase register-showcase" aria-label="Présentation Djeli'S Print">
+        <Link className="landing-brand auth-brand" href="/"><Image src="/brand/djelis-print-logo.png" alt="" width={72} height={72} /><span><strong>DJELI&apos;S</strong><small>PRINT</small></span></Link>
+        <div className="auth-showcase-copy"><p>DÉMARRAGE RAPIDE</p><h2>Votre comptoir<br /><em>passe au QR.</em></h2><span>Créez votre espace, ajoutez un poste et recevez votre premier fichier.</span></div>
+        <div className="auth-trust"><span>✓ Sans engagement</span><span>✓ Données protégées</span><span>✓ Installation guidée</span></div>
+      </section>
+      <section className="auth-card auth-card-premium">
         <Image src="/brand/djelis-print-logo.png" alt="Djeli'S_Print" width={104} height={104} priority />
         <p className="eyebrow">DJELI&apos;S_PRINT</p>
         <h1>Créer votre espace</h1>

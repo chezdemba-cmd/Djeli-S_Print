@@ -29,6 +29,22 @@ export async function signIn(formData: FormData) {
   redirect("/dashboard");
 }
 
+export async function signInDemo() {
+  if (process.env.NODE_ENV !== "development") {
+    throw new Error("Demo sign-in is only available in development.");
+  }
+  const email = process.env.DEMO_USER_EMAIL;
+  const password = process.env.DEMO_USER_PASSWORD;
+  if (!email || !password) authError("/auth/login", "Accès de démonstration indisponible.");
+  const supabase = await createClient();
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) {
+    console.error("Demo sign-in failed:", error.message);
+    authError("/auth/login", "Accès de démonstration indisponible.");
+  }
+  redirect("/dashboard");
+}
+
 export async function signUp(formData: FormData) {
   if (!await consumeRateLimit(await headers(), "auth-signup", 5, 600)) {
     authError("/auth/register", "Trop de tentatives. Réessayez plus tard.");

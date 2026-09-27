@@ -23,6 +23,15 @@ export async function consumeRateLimit(headers: HeaderReader, scope: string, max
     maximum_requests: maximumRequests,
     window_seconds: windowSeconds,
   });
-  if (error) throw new Error("Rate limiter unavailable");
+  if (error) {
+    // The hosted pilot database may lag behind local migrations while the MVP
+    // is being developed. Keep local sign-in usable, but never fail open in a
+    // production deployment where rate limiting is a security boundary.
+    if (process.env.NODE_ENV === "development") {
+      console.warn("Rate limiter unavailable in development:", error.message);
+      return true;
+    }
+    throw new Error("Rate limiter unavailable");
+  }
   return data === true;
 }
