@@ -8,7 +8,7 @@ import { scanForMalware } from "@/lib/malware-scan";
 import { captureError } from "@/lib/observability";
 
 export async function POST(request: Request, context: { params: Promise<{ token: string; documentId: string }> }) {
-  if (!await consumeRateLimit(request.headers, "public-upload-finalize", 30, 600)) {
+  if (!await consumeRateLimit(request.headers, "public-upload-finalize", 120, 600)) {
     return NextResponse.json({ error: "Trop de tentatives. Réessayez plus tard." }, { status: 429 });
   }
   const { token, documentId } = await context.params;

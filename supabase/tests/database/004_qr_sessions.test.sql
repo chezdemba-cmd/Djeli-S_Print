@@ -18,14 +18,14 @@ values ('92000000-0000-0000-0000-000000000001', '91000000-0000-0000-0000-0000000
 insert into public.workstations (id, organization_id, name)
 values ('93000000-0000-0000-0000-000000000001', '92000000-0000-0000-0000-000000000001', 'Comptoir');
 insert into public.print_sessions (
-  id, organization_id, workstation_id, token_hash, expires_at, max_documents, created_by, created_at
+  id, organization_id, workstation_id, token_hash, status, expires_at, max_documents, created_by, created_at
 )
 values
   ('94000000-0000-0000-0000-000000000001', '92000000-0000-0000-0000-000000000001',
-   '93000000-0000-0000-0000-000000000001', repeat('a', 64), clock_timestamp() + interval '10 minutes', 1,
+   '93000000-0000-0000-0000-000000000001', repeat('a', 64), 'ACTIVE', clock_timestamp() + interval '10 minutes', 1,
    '91000000-0000-0000-0000-000000000001', clock_timestamp()),
   ('94000000-0000-0000-0000-000000000002', '92000000-0000-0000-0000-000000000001',
-   '93000000-0000-0000-0000-000000000001', repeat('b', 64), clock_timestamp() - interval '1 minute', 1,
+   '93000000-0000-0000-0000-000000000001', repeat('b', 64), 'EXPIRED', clock_timestamp() - interval '1 minute', 1,
    '91000000-0000-0000-0000-000000000001', clock_timestamp() - interval '2 minutes');
 
 set local role anon;
