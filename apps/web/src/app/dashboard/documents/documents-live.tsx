@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { deleteDocument } from "./actions";
 
 export type DocumentListItem = {
   id: string;
@@ -61,7 +62,16 @@ export function DocumentsLive({ organizationId, initialDocuments }: { organizati
               {document.mime_type === "application/pdf" ? "PDF" : "IMG"}
             </div>
             <div className="document-body">
-              <div className="document-title-row"><h2 title={document.display_name}>{document.display_name}</h2><span className={`job-status ${document.status.toLowerCase()}`}>{document.status}</span></div>
+              <div className="document-title-row">
+                <h2 title={document.display_name}>{document.display_name}</h2>
+                <span className={`job-status ${document.status.toLowerCase()}`}>{document.status}</span>
+                {document.status !== "PRINTING" ? (
+                  <form action={deleteDocument}>
+                    <input type="hidden" name="documentId" value={document.id} />
+                    <button type="submit" className="document-delete" title="Supprimer" aria-label="Supprimer">×</button>
+                  </form>
+                ) : null}
+              </div>
               <div className="document-meta">
                 <span>{formatSize(document.size_bytes)}</span>
                 {document.page_count ? <span>{document.page_count} page{document.page_count > 1 ? "s" : ""}</span> : null}

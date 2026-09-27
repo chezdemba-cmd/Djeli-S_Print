@@ -45,10 +45,20 @@ Grille 4 colonnes de cartes détaillées (aperçu 150 px, méta, compte à rebou
 - **Bandeau de progression** au-dessus de la barre : Impression (primaire, page x/3) → « Document imprimé. Suppression sécurisée en cours. » (gris) → « Fichier supprimé » (fond `#EAF6EF`), masqué après 4 s.
 
 ### 6. Préflight — « Contrôle avant impression »
-Checklist avec pastilles vert/ambre/rouge (Résolution, Dimensions, DPI, Orientation, Couleurs RVB → CMJN recommandée, Fond perdu manquant, Qualité grand format). Pour les images : « Qualité recommandée par format » A4→A0 avec barres (excellente/bonne/moyenne/déconseillée). Bouton « Ouvrir le Studio IA ».
+**MVP réel (`apps/web/src/lib/preflight/*`)** : calcul du DPI théorique à partir des dimensions du
+fichier et du format papier choisi, limites anti-fichiers pathologiques (PDF > 1000 pages,
+dimensions > 5080 mm, image > 400 mégapixels). Pour les images : « Qualité recommandée par format »
+A4→A0.
+Non implémenté dans le MVP — retiré du périmètre actuel plutôt que promis à tort : détection
+d'espace couleur RVB/CMJN, détection de fond perdu, et le bouton « Ouvrir le Studio IA » (§7).
+Ces contrôles nécessiteraient une vraie librairie d'analyse d'image/couleur, pas seulement des
+métadonnées de dimensions.
 
-### 7. Studio IA
-Comparateur avant/après (ORIGINAL à gauche, VERSION AMÉLIORÉE à droite, séparateur blanc 2 px piloté par un slider). Panneau 352 px : explication, 8 traitements toggle (Netteté, Upscale ×2, ×4, Bruit, Couleurs, Contraste, Arrière-plan, Grand format) avec durée estimée, résultat DPI calculé, avertissement ambre, **APPLIQUER ET REVENIR** / Conserver l'original. Confirmation explicite obligatoire.
+### 7. Studio IA — hors périmètre du MVP
+Le prototype de design envisageait un comparateur avant/après avec retouche assistée par IA
+(upscale, netteté, débruitage, retouche d'arrière-plan). **Cette fonctionnalité n'existe pas dans
+le code livré** et nécessiterait un fournisseur IA externe (clé API, coûts par traitement) — à
+scoper séparément si le besoin se confirme, plutôt que d'être présentée comme un écran du MVP.
 
 ### 8. Machines
 Grille 2 colonnes. Carte : nom 15/750, IP/protocole mono, badge état (ONLINE vert `#EAF6EF`/`#15803D`, BUSY `#FEF3D6`/`#B45309`, OFFLINE `#FEF2F2`/`#B91C1C`), tags capacités, niveaux consommables (barres), boutons Réglages / Page de test.

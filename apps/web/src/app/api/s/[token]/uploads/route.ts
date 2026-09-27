@@ -5,7 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { consumeRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: Request, { params }: { params: Promise<{ token: string }> }) {
-  if (!await consumeRateLimit(request, "public-upload-init", 20, 600)) {
+  if (!await consumeRateLimit(request.headers, "public-upload-init", 20, 600)) {
     return NextResponse.json({ error: "Trop de tentatives. Réessayez plus tard." }, { status: 429 });
   }
   const { token } = await params;

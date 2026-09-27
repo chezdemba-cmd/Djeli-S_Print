@@ -24,6 +24,6 @@ export async function refreshSession(request: NextRequest) {
   );
 
   // Validates and refreshes the token. Never replace this with getSession() on the server.
-  await supabase.auth.getUser();
-  return response;
+  const { data } = await supabase.auth.getUser();
+  return { response, user: data.user };
 }

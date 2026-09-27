@@ -1,9 +1,9 @@
 import { isValidCronAuthorization } from "@/lib/cron-auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { runDeletionSweep, reportStuckDeletions } from "@/lib/deletion-sweep";
+import { captureError } from "@/lib/observability";
 
 export const maxDuration = 60;
-
-type DeletionRequest = { request_id: string; document_id: string; storage_bucket: string; storage_path: string };
 
 export async function GET(request: Request) {
   if (!isValidCronAuthorization(request.headers.get("authorization"), process.env.CRON_SECRET)) {
@@ -12,23 +12,14 @@ export async function GET(request: Request) {
 
   const admin = createAdminClient();
   const { error: healthError } = await admin.rpc("maintain_print_agent_health");
-  if (healthError) return Response.json({ error: "Maintenance des agents indisponible." }, { status: 503 });
-  const { data, error } = await admin.rpc("claim_document_deletions", { batch_size: 50 });
-  if (error) return Response.json({ error: "File de suppression indisponible." }, { status: 503 });
-
-  const requests = (data ?? []) as DeletionRequest[];
-  let deleted = 0;
-  let failed = 0;
-  for (const item of requests) {
-    const { error: storageError } = await admin.storage.from(item.storage_bucket).remove([item.storage_path]);
-    const { error: completionError } = await admin.rpc("complete_document_deletion", {
-      target_request_id: item.request_id,
-      succeeded: !storageError,
-      failure_message: storageError?.message ?? null,
-    });
-    if (storageError || completionError) failed += 1;
-    else deleted += 1;
+  if (healthError) {
+    captureError("cron.cleanup.health", healthError);
+    return Response.json({ error: "Maintenance des agents indisponible." }, { status: 503 });
   }
 
-  return Response.json({ claimed: requests.length, deleted, failed });
+  const sweep = await runDeletionSweep(50);
+  if (sweep.error) return Response.json({ error: "File de suppression indisponible." }, { status: 503 });
+  const stuck = await reportStuckDeletions();
+
+  return Response.json({ claimed: sweep.claimed, deleted: sweep.deleted, failed: sweep.failed, stuck });
 }

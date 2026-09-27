@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { consumeRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
-  if (!await consumeRateLimit(request, "agent-pair", 20, 600)) {
+  if (!await consumeRateLimit(request.headers, "agent-pair", 20, 600)) {
     return Response.json({ error: "Trop de tentatives. Réessayez plus tard." }, { status: 429 });
   }
   const body = await request.json().catch(() => null) as Record<string, unknown> | null;

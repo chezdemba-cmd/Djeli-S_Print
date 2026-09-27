@@ -4,9 +4,11 @@ import { hashSessionToken } from "@/lib/session-token";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { analyzeDocument } from "@/lib/preflight/analyze-document";
 import { consumeRateLimit } from "@/lib/rate-limit";
+import { scanForMalware } from "@/lib/malware-scan";
+import { captureError } from "@/lib/observability";
 
 export async function POST(request: Request, context: { params: Promise<{ token: string; documentId: string }> }) {
-  if (!await consumeRateLimit(request, "public-upload-finalize", 30, 600)) {
+  if (!await consumeRateLimit(request.headers, "public-upload-finalize", 30, 600)) {
     return NextResponse.json({ error: "Trop de tentatives. Réessayez plus tard." }, { status: 429 });
   }
   const { token, documentId } = await context.params;
@@ -43,9 +45,23 @@ export async function POST(request: Request, context: { params: Promise<{ token:
     return NextResponse.json({ error: "Le contenu ne correspond pas au type de fichier annoncé." }, { status: 422 });
   }
 
+  const scan = await scanForMalware(signed.signedUrl, document.mime_type);
+  if (!scan.clean) {
+    await admin.storage.from("documents").remove([document.storage_path]);
+    await admin.from("documents").update({ status: "FAILED", error_code: "MALWARE_DETECTED", error_message: "Le fichier a été rejeté par l’analyse antivirus." }).eq("id", document.id);
+    return NextResponse.json({ error: "Le fichier a été rejeté par l’analyse antivirus." }, { status: 422 });
+  }
+
+  const { error: consumeError } = await admin.rpc("consume_upload_slot", { target_session_id: document.print_session_id });
+  if (consumeError) {
+    await admin.storage.from("documents").remove([document.storage_path]);
+    await admin.from("documents").update({ status: "FAILED", error_code: "QUOTA_EXCEEDED", error_message: "Le quota d’envoi de cette session est déjà atteint." }).eq("id", document.id);
+    return NextResponse.json({ error: "Le quota d’envoi de cette session est déjà atteint." }, { status: 409 });
+  }
+
   const { error } = await admin.from("documents").update({ status: "RECEIVED", received_at: new Date().toISOString() }).eq("id", document.id);
   if (error) return NextResponse.json({ error: "Finalisation impossible." }, { status: 500 });
-  after(() => analyzeDocument(document.id));
+  after(() => analyzeDocument(document.id).catch((analyzeError) => captureError("finalize.analyze_document", analyzeError, { documentId: document.id })));
   return NextResponse.json({ documentId: document.id, status: "RECEIVED" });
 }
 

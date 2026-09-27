@@ -1,7 +1,9 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { consumeRateLimit } from "@/lib/rate-limit";
 import { validateRegistration } from "@/lib/validation";
 
 function value(formData: FormData, key: string): string {
@@ -14,6 +16,9 @@ function authError(path: string, message: string): never {
 }
 
 export async function signIn(formData: FormData) {
+  if (!await consumeRateLimit(await headers(), "auth-signin", 10, 600)) {
+    authError("/auth/login", "Trop de tentatives. Réessayez plus tard.");
+  }
   const email = value(formData, "email").toLowerCase();
   const password = String(formData.get("password") ?? "");
   if (!email || !password) authError("/auth/login", "Email et mot de passe requis.");
@@ -25,6 +30,9 @@ export async function signIn(formData: FormData) {
 }
 
 export async function signUp(formData: FormData) {
+  if (!await consumeRateLimit(await headers(), "auth-signup", 5, 600)) {
+    authError("/auth/register", "Trop de tentatives. Réessayez plus tard.");
+  }
   const displayName = value(formData, "displayName");
   const email = value(formData, "email").toLowerCase();
   const password = String(formData.get("password") ?? "");

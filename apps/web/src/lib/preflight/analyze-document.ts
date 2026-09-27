@@ -2,8 +2,16 @@ import "server-only";
 
 import { PDFDocument } from "pdf-lib";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { captureError } from "@/lib/observability";
 import { readImageDimensions } from "./image-metadata";
 import { imageQualityByFormat } from "./quality";
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) => setTimeout(() => reject(new Error("Preflight timed out")), ms)),
+  ]);
+}
 
 export async function analyzeDocument(documentId: string) {
   const admin = createAdminClient();
@@ -16,7 +24,10 @@ export async function analyzeDocument(documentId: string) {
     if (document.mime_type === "application/pdf") {
       const { data: blob, error } = await admin.storage.from("documents").download(document.storage_path);
       if (error || !blob) throw new Error("PDF download failed");
-      const pdf = await PDFDocument.load(await blob.arrayBuffer(), { ignoreEncryption: true, updateMetadata: false });
+      const pdf = await withTimeout(
+        PDFDocument.load(await blob.arrayBuffer(), { ignoreEncryption: true, updateMetadata: false }),
+        10_000,
+      );
       const pages = pdf.getPages();
       if (pages.length === 0) throw new Error("Empty PDF");
       if (pages.length > 1000) throw new Error("PDF page limit exceeded");
@@ -48,7 +59,8 @@ export async function analyzeDocument(documentId: string) {
       status: "READY", page_count: 1, width_px: dimensions.width, height_px: dimensions.height,
       preflight_rating: a4.rating, preflight_data: { kind: "image", formatQualities: qualities },
     }).eq("id", document.id);
-  } catch {
+  } catch (error) {
+    captureError("preflight.analyze_document", error, { documentId: document.id, mimeType: document.mime_type });
     await admin.from("documents").update({ status: "FAILED", error_code: "PREFLIGHT_FAILED", error_message: "Le document n’a pas pu être analysé." }).eq("id", document.id);
   }
 }

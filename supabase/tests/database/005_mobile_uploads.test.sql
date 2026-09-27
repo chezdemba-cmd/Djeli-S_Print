@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(4);
+select plan(7);
 
 insert into auth.users (id, instance_id, aud, role, email, encrypted_password, email_confirmed_at, raw_app_meta_data, raw_user_meta_data, created_at, updated_at)
 values ('a1000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000000','authenticated','authenticated','upload@example.test','',now(),'{}','{}',now(),now());
@@ -15,11 +15,19 @@ select lives_ok(
   $$ select * from public.reserve_document_upload(repeat('c',64),'client.pdf','application/pdf',1024) $$,
   'valid upload is reserved atomically'
 );
-select is((select status::text from public.print_sessions where id='a4000000-0000-0000-0000-000000000001'),'CONSUMED','single-use session is consumed');
+select is((select status::text from public.print_sessions where id='a4000000-0000-0000-0000-000000000001'),'ACTIVE','reservation alone does not consume the quota');
+select is((select documents_received from public.print_sessions where id='a4000000-0000-0000-0000-000000000001'),0::smallint,'documents_received stays at zero until finalize');
 select is((select status::text from public.documents where print_session_id='a4000000-0000-0000-0000-000000000001'),'UPLOADING','document starts as uploading');
+
+select lives_ok(
+  $$ select public.consume_upload_slot('a4000000-0000-0000-0000-000000000001') $$,
+  'finalize consumes the upload slot'
+);
+select is((select status::text from public.print_sessions where id='a4000000-0000-0000-0000-000000000001'),'CONSUMED','single-use session is consumed after finalize');
+
 select throws_ok(
   $$ select * from public.reserve_document_upload(repeat('c',64),'second.pdf','application/pdf',1024) $$,
-  'P0002','Session unavailable','session cannot reserve a second document'
+  'P0002','Session unavailable','session cannot reserve a second document once consumed'
 );
 
 select * from finish();

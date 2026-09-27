@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+process.env.AGENT_TOKEN_PEPPER ??= "test-agent-token-pepper-0123456789ab";
 import { createAgentSecret, hashAgentSecret } from "./agent-crypto.ts";
 
 test("agent secrets are random and stored as irreversible fixed-size hashes", () => {

@@ -1,8 +1,15 @@
 # Authentification imprimeur
 
 L'application utilise Supabase Auth avec le flux PKCE et des cookies gérés côté serveur. Le fichier
-`src/proxy.ts` rafraîchit la session, mais ne constitue pas la frontière d'autorisation : chaque
-layout protégé appelle `auth.getUser()` puis les requêtes sont encore filtrées par RLS.
+`src/proxy.ts` rafraîchit la session et redirige désormais vers `/auth/login` toute requête
+`/dashboard/**` sans utilisateur authentifié — une défense en profondeur, pas la frontière
+d'autorisation principale : chaque layout protégé appelle toujours `auth.getUser()` (via
+`requireUser`) et les requêtes restent filtrées par RLS.
+
+`signIn`/`signUp` (`src/app/auth/actions.ts`) sont limités en fréquence via
+`consumeRateLimit` (10 tentatives/10 min pour la connexion, 5/10 min pour l'inscription), sur la
+même empreinte réseau que les endpoints publics `/s/[token]/**`. Cette empreinte utilise
+`RATE_LIMIT_PEPPER`, distinct de `SESSION_TOKEN_PEPPER` (séparation de domaine cryptographique).
 
 ## Parcours
 

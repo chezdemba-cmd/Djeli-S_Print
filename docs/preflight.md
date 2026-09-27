@@ -12,5 +12,7 @@ de la première page, l'orientation et la cohérence des tailles. Les PDF vector
 recommandation initiale `EXCELLENT`; l'analyse CMJN, des images incorporées et du fond perdu reste
 prévue pour une version ultérieure.
 
-L'analyse est limitée à 60 secondes sur Vercel. Les erreurs ne révèlent pas de détail technique au
-client et placent le document en `FAILED` avec un code interne `PREFLIGHT_FAILED`.
+L'analyse est limitée à 60 secondes sur Vercel, et le chargement PDF via `pdf-lib` est en plus borné
+à 10 secondes (un PDF pathologique bascule alors directement en `FAILED` au lieu de risquer de
+saturer la fonction serverless). Les erreurs ne révèlent pas de détail technique au client et
+placent le document en `FAILED` avec un code interne `PREFLIGHT_FAILED`.
